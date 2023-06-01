@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nel-baz <nel-baz@student.42.fr>            +#+  +:+       +#+         #
+#    By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/30 18:39:13 by nel-baz           #+#    #+#              #
-#    Updated: 2023/05/30 18:43:52 by nel-baz          ###   ########.fr        #
+#    Updated: 2023/06/01 09:17:48 by ylachhab         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,12 +23,12 @@ OBJS = $(SRCS:.c=.o)
 %.o: %.c minishell.h
 	$(CC) $(CFLAGS) -c $< -o $@
 
-all :  $(NAME)	
+all :  $(NAME)
 
 $(NAME):  $(OBJS)
 	$(CC) $(CFLAGS) $(OBJS) -o $(NAME)
 
-clean:	
+clean:
 	rm -rf $(OBJS)
 
 fclean:	clean
