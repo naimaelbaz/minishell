@@ -1,32 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/30 18:44:04 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/06/03 14:37:58 by ylachhab         ###   ########.fr       */
+/*   Created: 2022/10/13 13:02:29 by ylachhab          #+#    #+#             */
+/*   Updated: 2022/11/09 03:05:02 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(int ac, char **av)
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
+
 {
-	char	*input;
+	unsigned char	*p1;
+	unsigned char	*p2;
 
-	(void)av;
-	(void)ac;
-	if (ac != 1)
-		return (printf("Error\n"), 1);
-	while (1)
+	p1 = (unsigned char *)s1;
+	p2 = (unsigned char *)s2;
+	while (n > 0)
 	{
-		input = readline("minishell$ ");
-		if (input)
-			ft_check_syntax_error(input);
-		if (strlen(input) > 0)
-			add_history(input);
-		free (input);
+		if (*p1 != *p2)
+			return (*p1 - *p2);
+		p1++;
+		p2++;
+		n--;
 	}
+	return (0);
 }

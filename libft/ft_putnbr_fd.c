@@ -1,32 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/30 18:44:04 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/06/03 14:37:58 by ylachhab         ###   ########.fr       */
+/*   Created: 2022/10/22 16:53:24 by ylachhab          #+#    #+#             */
+/*   Updated: 2022/11/08 22:28:06 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(int ac, char **av)
+void	ft_putnbr_fd(int n, int fd)
 {
-	char	*input;
-
-	(void)av;
-	(void)ac;
-	if (ac != 1)
-		return (printf("Error\n"), 1);
-	while (1)
+	if (n < 0)
 	{
-		input = readline("minishell$ ");
-		if (input)
-			ft_check_syntax_error(input);
-		if (strlen(input) > 0)
-			add_history(input);
-		free (input);
+		if (n == -2147483648)
+		{
+			write(fd, "-2147483648", 11);
+		}
+		else
+		{
+			n *= -1;
+			write(fd, "-", 1);
+			ft_putnbr_fd(n, fd);
+		}
 	}
+	else if (n >= 10)
+	{
+		ft_putnbr_fd((n / 10), fd);
+		ft_putchar_fd(((n % 10) + 48), fd);
+	}
+	else if (n <= 9)
+		ft_putchar_fd((n + 48), fd);
 }

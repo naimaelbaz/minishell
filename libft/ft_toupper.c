@@ -1,32 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_toupper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/30 18:44:04 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/06/03 14:37:58 by ylachhab         ###   ########.fr       */
+/*   Created: 2022/10/10 11:38:21 by ylachhab          #+#    #+#             */
+/*   Updated: 2022/11/07 15:28:16 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(int ac, char **av)
+int	ft_toupper(int ch)
 {
-	char	*input;
-
-	(void)av;
-	(void)ac;
-	if (ac != 1)
-		return (printf("Error\n"), 1);
-	while (1)
-	{
-		input = readline("minishell$ ");
-		if (input)
-			ft_check_syntax_error(input);
-		if (strlen(input) > 0)
-			add_history(input);
-		free (input);
-	}
+	if (ch >= 'a' && ch <= 'z')
+		ch -= 32;
+	return (ch);
 }

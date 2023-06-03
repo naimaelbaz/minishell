@@ -1,32 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/30 18:44:04 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/06/03 14:37:58 by ylachhab         ###   ########.fr       */
+/*   Created: 2022/10/10 15:01:51 by ylachhab          #+#    #+#             */
+/*   Updated: 2022/11/07 15:22:08 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(int ac, char **av)
+char	*ft_strchr(const char *str, int c)
 {
-	char	*input;
+	char	*ptr;
+	int		j;
+	char	a;
 
-	(void)av;
-	(void)ac;
-	if (ac != 1)
-		return (printf("Error\n"), 1);
-	while (1)
+	j = 0;
+	a = (char)c;
+	ptr = (char *)str;
+	if (a == 0)
+		return (ptr + ft_strlen(ptr));
+	while (ptr[j])
 	{
-		input = readline("minishell$ ");
-		if (input)
-			ft_check_syntax_error(input);
-		if (strlen(input) > 0)
-			add_history(input);
-		free (input);
+		if (ptr[j] == a)
+			return (ptr + j);
+		j++;
 	}
+	return (NULL);
 }

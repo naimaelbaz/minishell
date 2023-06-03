@@ -1,32 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_lstsize_bonus.c                                 :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/30 18:44:04 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/06/03 14:37:58 by ylachhab         ###   ########.fr       */
+/*   Created: 2022/11/04 10:49:02 by ylachhab          #+#    #+#             */
+/*   Updated: 2022/11/08 22:27:43 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(int ac, char **av)
+int	ft_lstsize(t_list *lst)
 {
-	char	*input;
+	t_list	*ptr;
+	int		count;
 
-	(void)av;
-	(void)ac;
-	if (ac != 1)
-		return (printf("Error\n"), 1);
-	while (1)
+	count = 0;
+	if (!lst)
+		return (0);
+	ptr = NULL;
+	ptr = lst;
+	while (ptr != NULL)
 	{
-		input = readline("minishell$ ");
-		if (input)
-			ft_check_syntax_error(input);
-		if (strlen(input) > 0)
-			add_history(input);
-		free (input);
+		count++;
+		ptr = ptr -> next;
 	}
+	return (count);
 }

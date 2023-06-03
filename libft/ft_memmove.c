@@ -1,32 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/30 18:44:04 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/06/03 14:37:58 by ylachhab         ###   ########.fr       */
+/*   Created: 2022/10/17 16:38:54 by ylachhab          #+#    #+#             */
+/*   Updated: 2022/11/07 15:21:37 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(int ac, char **av)
+void	*ft_memmove(void *dest, const void *src, size_t len)
+
 {
-	char	*input;
+	char	*d;
+	char	*s;
 
-	(void)av;
-	(void)ac;
-	if (ac != 1)
-		return (printf("Error\n"), 1);
-	while (1)
+	d = (char *)dest;
+	s = (char *)src;
+	if (dest == src)
+		return (dest);
+	if (s < d)
 	{
-		input = readline("minishell$ ");
-		if (input)
-			ft_check_syntax_error(input);
-		if (strlen(input) > 0)
-			add_history(input);
-		free (input);
+		while (len--)
+			*(d + len) = *(s + len);
+		return (dest);
 	}
+	while (len--)
+		*d++ = *s++;
+	return (dest);
 }

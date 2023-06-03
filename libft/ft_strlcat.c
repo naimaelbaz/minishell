@@ -1,32 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   main.c                                             :+:      :+:    :+:   */
+/*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/30 18:44:04 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/06/03 14:37:58 by ylachhab         ###   ########.fr       */
+/*   Created: 2022/10/18 18:51:44 by ylachhab          #+#    #+#             */
+/*   Updated: 2022/11/09 02:52:17 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-int	main(int ac, char **av)
+size_t	ft_strlcat(char *dst, const char *src, size_t dstsize)
 {
-	char	*input;
+	size_t	i;
+	size_t	dlen;
+	size_t	slen;
 
-	(void)av;
-	(void)ac;
-	if (ac != 1)
-		return (printf("Error\n"), 1);
-	while (1)
+	i = 0;
+	slen = ft_strlen(src);
+	if ((!dst && !dstsize) || !dstsize)
+		return (slen);
+	dlen = ft_strlen(dst);
+	if (dstsize <= dlen)
+		return (slen + dstsize);
+	while (src[i] && i + dlen < dstsize - 1)
 	{
-		input = readline("minishell$ ");
-		if (input)
-			ft_check_syntax_error(input);
-		if (strlen(input) > 0)
-			add_history(input);
-		free (input);
+		dst[dlen + i] = src[i];
+		i++;
 	}
+	dst[dlen + i] = '\0';
+	return (dlen + slen);
 }
