@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils.c                                            :+:      :+:    :+:   */
+/*   func_utils.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 10:15:15 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/03 17:40:33 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/06/04 12:18:03 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,11 +67,37 @@ int	ft_check_pipe(char *input)
 		if (input[i] == '|')
 		{
 			i++;
-			while (input[i] && ((input[i] >= 9 && input[i] <= 13) || input[i] == 32))
+			while (input[i] && ((input[i] >= 9 && input[i] <= 13)
+					|| input[i] == 32))
 				i++;
 			if (input[i] == '|')
 				return (1);
 			if (input[i] == '\0')
+				return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+int	ft_check_redirect_input(char *input)
+{
+	int	i;
+
+	i = 0;
+	while (input[i] != '\0')
+	{
+		if (input[i] == '<')
+		{
+			i++;
+			if (input[i] == '<')
+				i++;
+			while (input[i] && ((input[i] >= 9 && input[i] <= 13)
+					|| input[i] == 32))
+				i++;
+			if (input[i] == '\0')
+				return (1);
+			if (input[i] == '>' || input[i] == '|' || input[i] == '<')
 				return (1);
 		}
 		i++;
@@ -85,7 +111,11 @@ int	ft_check_syntax_error(char *input)
 		printf("minishell : syntax error near unexpected token `|'\n");
 	else if (ft_check_quote_close(input))
 		printf("minishell : syntax error\n");
-	// else
-	// 	printf("OK\n");
+	else if (ft_check_redirect_output(input))
+		printf("minishell : syntax syntax error near"
+			" unexpected token redirection out\n");
+	else if (ft_check_redirect_input(input))
+		printf("minishell : syntax syntax error near"
+			" unexpected token redirection in\n");
 	return (0);
 }

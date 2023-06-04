@@ -6,7 +6,7 @@
 #    By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/30 18:39:13 by nel-baz           #+#    #+#              #
-#    Updated: 2023/06/01 15:35:08 by ylachhab         ###   ########.fr        #
+#    Updated: 2023/06/04 12:17:03 by ylachhab         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -17,7 +17,8 @@ CC = cc
 FLAGS = -Wall -Werror -Wextra
 
 SRCS =	main.c \
-		syntax_error/utils.c \
+		syntax_error/func_utils.c \
+		syntax_error/func_utils1.c \
 
 OBJS = $(SRCS:.c=.o)
 
