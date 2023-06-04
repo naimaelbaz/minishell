@@ -6,7 +6,7 @@
 /*   By: nel-baz <nel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 13:24:23 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/06/04 15:16:05 by nel-baz          ###   ########.fr       */
+/*   Updated: 2023/06/04 15:56:55 by nel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,8 @@ int	ft_qoute(t_enum *enu, char **input_line, t_free **ptr,
 		len = ft_get_length(*input_line);
 		if (len == 0)
 		{
-			input_line += 2;
-			return (0);
+			*input_line += 2;
+			return (1);
 		}
 		if (**input_line == QOUTE)
 			enu->state = IN_QOUTE;
