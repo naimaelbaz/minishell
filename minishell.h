@@ -6,7 +6,7 @@
 /*   By: nel-baz <nel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:44:30 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/06/04 17:55:17 by nel-baz          ###   ########.fr       */
+/*   Updated: 2023/06/04 17:58:43 by nel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,17 @@ typedef struct s_free
 	void			*ptr;
 	struct s_free	*next;
 }	t_free;
+
+// syntax_error_functions
+
+int		ft_check_redirect_input(char *input);
+int		ft_check_redirect_output(char *input);
+int		ft_check_pipe(char *input);
+int		ft_pipe_end(char *input);
+int		ft_check_quote_close(char *input);
+int		ft_check_syntax_error(char *input);
+
+// lexing_functions
 
 void	ft_lexing(char *input_line, t_token	**token, t_free **ptr);
 void	ft_free(t_free **ptr);
