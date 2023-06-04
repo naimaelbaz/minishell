@@ -1,32 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memcmp.c                                        :+:      :+:    :+:   */
+/*   func_utils1.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/13 13:02:29 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/04 15:44:12 by ylachhab         ###   ########.fr       */
+/*   Created: 2023/06/04 12:17:29 by ylachhab          #+#    #+#             */
+/*   Updated: 2023/06/04 13:06:41 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-int	ft_memcmp(const void *s1, const void *s2, size_t n)
-
+int	ft_check_redirect_output(char *input)
 {
-	unsigned char	*p1;
-	unsigned char	*p2;
+	int	i;
 
-	p1 = (unsigned char *)s1;
-	p2 = (unsigned char *)s2;
-	while (n > 0)
+	i = 0;
+	while (input[i] != '\0')
 	{
-		if (*p1 != *p2)
-			return (*p1 - *p2);
-		p1++;
-		p2++;
-		n--;
+		if (input[i] == '>')
+		{
+			i++;
+			if (input[i] == '>')
+				i++;
+			while (input[i] && ((input[i] >= 9 && input[i] <= 13)
+					|| input[i] == 32))
+				i++;
+			if (input[i] == '\0')
+				return (1);
+			if (input[i] == '>' || input[i] == '|' || input[i] == '<')
+				return (1);
+		}
+		i++;
 	}
 	return (0);
 }

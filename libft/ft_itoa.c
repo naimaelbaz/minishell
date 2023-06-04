@@ -3,54 +3,53 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nel-baz <nel-baz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/19 14:18:25 by nel-baz           #+#    #+#             */
-/*   Updated: 2022/11/02 20:47:05 by nel-baz          ###   ########.fr       */
+/*   Created: 2022/10/24 17:26:10 by ylachhab          #+#    #+#             */
+/*   Updated: 2023/06/04 15:43:19 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	count_size(int n)
+static size_t	numberof_n(long int n)
 {
-	int	count;
+	long	nb;
 
-	count = 0;
-	if (n <= 0)
-		count++;
-	while (n != 0)
+	nb = 1;
+	while (n >= 10)
 	{
 		n /= 10;
-		count++;
+		nb++;
 	}
-	return (count);
+	return (nb);
 }
 
 char	*ft_itoa(int n)
 {
-	int		ln;
-	char	*ptr;
+	long		a;
+	int			len;
+	char		*res;
+	int			i;
 
-	if (n == -2147483648)
-		return (ft_strdup("-2147483648"));
-	ln = count_size(n);
-	ptr = (char *)malloc(sizeof(char) * (ln + 1));
-	if (!ptr)
-		return (NULL);
-	ptr[ln--] = '\0';
-	if (n == 0)
-		ptr[0] = '0';
-	while (n)
+	a = n;
+	if (n < 0)
+		a *= -1;
+	len = numberof_n(a);
+	if (n < 0)
+		len ++;
+	res = malloc(len + 1);
+	if (res == 0)
+		return (0);
+	res[len] = '\0';
+	i = len - 1;
+	while (i >= 0)
 	{
-		if (n < 0)
-		{
-			n *= -1;
-			ptr[0] = '-';
-		}
-		ptr[ln] = (n % 10) + 48;
-		n /= 10;
-		ln--;
+		res[i] = (a % 10) + '0';
+		a /= 10;
+		i--;
 	}
-	return (ptr);
+	if (n < 0)
+		res[0] = '-';
+	return (res);
 }

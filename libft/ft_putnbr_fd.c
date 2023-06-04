@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_putnbr_fd.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nel-baz <nel-baz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/25 14:53:12 by nel-baz           #+#    #+#             */
-/*   Updated: 2022/11/02 20:46:32 by nel-baz          ###   ########.fr       */
+/*   Created: 2022/10/22 16:53:24 by ylachhab          #+#    #+#             */
+/*   Updated: 2023/06/04 15:44:33 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,22 +14,24 @@
 
 void	ft_putnbr_fd(int n, int fd)
 {
-	if (n == -2147483648)
-		ft_putstr_fd("-2147483648", fd);
-	else if (n >= 0 && n <= 9)
+	if (n < 0)
 	{
-		n += 48;
-		ft_putchar_fd(n, fd);
+		if (n == -2147483648)
+		{
+			write(fd, "-2147483648", 11);
+		}
+		else
+		{
+			n *= -1;
+			write(fd, "-", 1);
+			ft_putnbr_fd(n, fd);
+		}
 	}
-	else if (n < 0)
+	else if (n >= 10)
 	{
-		n *= -1;
-		ft_putchar_fd('-', fd);
-		ft_putnbr_fd(n, fd);
+		ft_putnbr_fd((n / 10), fd);
+		ft_putchar_fd(((n % 10) + 48), fd);
 	}
-	else if (n > 9)
-	{
-		ft_putnbr_fd(n / 10, fd);
-		ft_putnbr_fd(n % 10, fd);
-	}
+	else if (n <= 9)
+		ft_putchar_fd((n + 48), fd);
 }

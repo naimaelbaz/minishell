@@ -3,51 +3,81 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nel-baz <nel-baz@student.42.fr>            +#+  +:+       +#+         #
+#    By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2022/10/11 14:39:43 by nel-baz           #+#    #+#              #
-#    Updated: 2023/06/01 10:29:33 by nel-baz          ###   ########.fr        #
+#    Created: 2022/10/20 12:06:17 by ylachhab          #+#    #+#              #
+#    Updated: 2023/06/04 15:46:33 by ylachhab         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
-NAME = libft.a
+NAME  = libft.a
+
+FLAGS  = -Wall -Wextra -Werror
 
 CC = cc
 
-CFLAGS = -Wall -Werror -Wextra
+AR = ar rc
 
-SRCS = ft_isascii.c ft_memcpy.c ft_strjoin.c ft_strrchr.c\
-ft_atoi.c ft_isdigit.c ft_strlcat.c ft_strtrim.c\
-ft_bzero.c ft_isprint.c ft_memset.c ft_strlcpy.c ft_substr.c\
-ft_calloc.c ft_itoa.c ft_split.c ft_strlen.c ft_tolower.c\
-ft_isalnum.c ft_memchr.c ft_strchr.c ft_strncmp.c ft_toupper.c\
-ft_isalpha.c ft_memcmp.c ft_strdup.c ft_strnstr.c ft_strmapi.c\
-ft_striteri.c ft_memmove.c ft_putchar_fd.c ft_putstr_fd.c\
-ft_putendl_fd.c ft_putnbr_fd.c
+RM = rm -f
 
-SRSS_BONUS = ft_lstadd_front.c ft_lstnew.c ft_lstsize.c\
-ft_lstlast.c ft_lstadd_back.c ft_lstdelone.c ft_lstclear.c\
-ft_lstiter.c ft_lstmap.c
+SRCS  = ft_atoi.c\
+		ft_bzero.c\
+		ft_calloc.c\
+		ft_isalnum.c\
+		ft_isalpha.c\
+		ft_isascii.c\
+		ft_isdigit.c\
+		ft_isprint.c\
+		ft_itoa.c\
+		ft_memchr.c\
+		ft_memcmp.c\
+		ft_memcpy.c\
+		ft_memmove.c\
+		ft_memset.c\
+		ft_putchar_fd.c\
+		ft_putendl_fd.c\
+		ft_putnbr_fd.c\
+		ft_putstr_fd.c\
+		ft_split.c\
+		ft_strchr.c\
+		ft_strdup.c\
+		ft_striteri.c\
+		ft_strjoin.c\
+		ft_strlcat.c\
+		ft_strlcpy.c\
+		ft_strlen.c\
+		ft_strmapi.c\
+		ft_strncmp.c\
+		ft_strnstr.c\
+		ft_strrchr.c\
+		ft_strtrim.c\
+		ft_substr.c\
+		ft_tolower.c\
+		ft_toupper.c
+
+BSRCS = ft_lstadd_front.c ft_lstadd_back.c \
+		ft_lstlast.c ft_lstnew.c ft_lstsize.c\
+		ft_lstdelone.c ft_lstclear.c ft_lstiter.c
 
 OBJS = $(SRCS:.c=.o)
-OBJS_BONUS = $(SRSS_BONUS:.c=.o)
+
+SOBJ = $(BSRCS:.c=.o)
+
+all: $(NAME)
 
 %.o: %.c libft.h
-	$(CC) $(CFLAGS) -c $<
+	$(CC) $(FLAGS) -c $< -o $@
 
-all : $(NAME)
+$(NAME) : $(OBJS)
+	$(AR) $(NAME) $(OBJS)
 
-$(NAME):	$(OBJS)
-		ar rc $(NAME) $(OBJS)
-		
-bonus:	 $(OBJS_BONUS)
-		ar cr $(NAME)  $(OBJS_BONUS)
-clean:	
-		rm -rf $(OBJS) $(OBJS_BONUS)
+bonus : all $(SOBJ)
+	$(AR) $(NAME) $(SOBJ)
 
-fclean:	clean
-		rm -rf $(NAME)
-		
-re : fclean all
+clean:
+	$(RM) $(OBJS) $(SOBJ)
 
-.PHONY : all fclean clean re bonus
+fclean: clean
+	$(RM) $(NAME)
+
+re: fclean all

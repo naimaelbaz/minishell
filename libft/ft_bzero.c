@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_bzero.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nel-baz <nel-baz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/07 10:47:36 by nel-baz           #+#    #+#             */
-/*   Updated: 2022/11/02 21:28:21 by nel-baz          ###   ########.fr       */
+/*   Created: 2022/10/16 00:55:32 by ylachhab          #+#    #+#             */
+/*   Updated: 2023/06/04 15:42:48 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,14 @@
 
 void	ft_bzero(void *s, size_t n)
 {
-	char	*str;
 	size_t	i;
+	char	*b;
 
 	i = 0;
-	str = (char *) s;
+	b = (char *)s;
 	while (i < n)
 	{
-		str[i] = 0;
+		b[i] = 0;
 		i++;
 	}
 }

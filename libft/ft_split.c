@@ -3,106 +3,98 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nel-baz <nel-baz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/16 09:18:51 by nel-baz           #+#    #+#             */
-/*   Updated: 2022/11/02 20:36:47 by nel-baz          ###   ########.fr       */
+/*   Created: 2022/10/25 08:30:15 by ylachhab          #+#    #+#             */
+/*   Updated: 2023/06/04 15:44:48 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static size_t	num_word(const char *s, char c)
+static	size_t	ft_count(char const *s, char c)
 {
-	size_t	i;
-	int		comp;
+	size_t	count;
 
-	i = 0;
-	comp = 0;
-	while (s[i] != '\0')
+	if (!*s)
+		return (0);
+	count = 0;
+	while (*s)
 	{
-		while (s[i] && s[i] == c)
-			i++;
-		if (s[i] && s[i] != c)
-			comp++;
-		while (s[i] && s[i] != c)
-			i++;
+		while (*s == c)
+			s++;
+		if (*s)
+			count++;
+		while ((*s != c) && *s)
+			s++;
 	}
-	return (comp);
+	return (count);
 }
 
-static size_t	lenth_word(const char *s, char c, int start)
+static	int	ft_len(char const *s, char c)
 {
-	size_t	i;
-	size_t	j;
+	int	i;
+	int	count;
 
-	j = 0;
 	i = 0;
-	while (s[start + i])
+	count = 0;
+	while (s[i] != c && s[i] != '\0')
 	{
-		if (s[start + i] && s[start + i] != c)
-			j++;
-		if (s[start + i] && s[start + i] == c)
-			break ;
 		i++;
+		count++;
 	}
-	return (j);
+	return (count);
 }
 
-static void	free_ptr(char **ptr, int k)
+static	void	*ft_avoid_leak(char **str, int indice)
 {
 	int	i;
 
 	i = 0;
-	while (i < k)
+	while (i < indice)
 	{
-		free(ptr[i]);
-		ptr[i] = NULL;
+		free (str[i]);
 		i++;
 	}
-	free(ptr);
-	ptr = NULL;
+	free (str);
+	return (NULL);
 }
 
-static char	**spl(char **ptr, const char *s, char c, size_t n_word)
+static	char	**ft_do(char const *s, int rows, char c, char **str)
 {
-	size_t	i;
-	size_t	k;
+	int	i;
+	int	j;
+	int	len;
 
-	i = 0;
-	k = 0;
-	while (s && k < n_word)
+	i = -1;
+	while (++i < rows)
 	{
-		while (s[i] && s[i] == c)
-			i++;
-		if (s[i] && s[i] != c)
-		{
-			ptr[k] = ft_substr((s + i), 0, lenth_word(s, c, i));
-			if (ptr[k] == NULL)
-			{
-				free_ptr(ptr, k);
-				return (NULL);
-			}
-			k++;
-		}
-		while (s[i] && s[i] != c)
-			i++;
+		while (*s == c)
+			s++;
+		len = ft_len(s, c);
+		str[i] = (char *)malloc(sizeof(char) * (len + 1));
+		if (!str[i])
+			return (ft_avoid_leak(str, i));
+		j = 0;
+		while (j < len)
+			str[i][j++] = *s++;
+		str[i][j] = '\0';
 	}
-	ptr[k] = NULL;
-	return (ptr);
+	str[i] = NULL;
+	return (str);
 }
 
-char	**ft_split(const char *s, char c)
+char	**ft_split(char const *s, char c)
 {
-	char	**ptr;
-	size_t	n_word;
+	char	**str;
+	int		rows;
 
 	if (!s)
 		return (NULL);
-	n_word = num_word(s, c);
-	ptr = (char **)malloc(sizeof(char *) * (n_word + 1));
-	if (!ptr)
+	rows = ft_count(s, c);
+	str = (char **)malloc(sizeof(char *) * (rows + 1));
+	if (!str)
 		return (NULL);
-	ptr = spl(ptr, s, c, n_word);
-	return (ptr);
+	str = ft_do(s, rows, c, str);
+	return (str);
 }

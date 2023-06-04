@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nel-baz <nel-baz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/13 13:16:06 by nel-baz           #+#    #+#             */
-/*   Updated: 2022/11/02 19:45:29 by nel-baz          ###   ########.fr       */
+/*   Created: 2022/10/21 22:13:23 by ylachhab          #+#    #+#             */
+/*   Updated: 2023/06/04 15:45:05 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,24 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	size_t	i;
 	size_t	j;
 
+	i = 0;
+	j = 0;
 	if (!s1 || !s2)
 		return (NULL);
-	i = ft_strlen(s1);
-	j = ft_strlen(s2);
-	str = (char *)malloc((i + j + 1) * sizeof(char));
+	str = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2)) + 1);
 	if (!str)
 		return (NULL);
-	ft_memcpy((void *)str, (void *)s1, i);
-	ft_memcpy((void *)str + i, (void *)s2, j + 1);
+	while (s1[i] && i < (ft_strlen(s1)))
+	{
+		str[i] = s1[i];
+		i++;
+	}
+	while (s2[j] && i < (ft_strlen(s1) + ft_strlen(s2)))
+	{
+		str[i] = s2[j];
+		i++;
+		j++;
+	}
+	str[i] = '\0';
 	return (str);
 }

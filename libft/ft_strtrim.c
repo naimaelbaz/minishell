@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nel-baz <nel-baz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/13 14:56:02 by nel-baz           #+#    #+#             */
-/*   Updated: 2022/10/26 19:48:01 by nel-baz          ###   ########.fr       */
+/*   Created: 2022/10/23 11:51:17 by ylachhab          #+#    #+#             */
+/*   Updated: 2023/06/04 15:45:44 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,26 +14,29 @@
 
 char	*ft_strtrim(char const *s1, char const *set)
 {
-	size_t	j;
-	size_t	start;
-	size_t	end;
+	char	*str;
+	size_t	debut;
+	size_t	fin;
+	size_t	i;
 
-	end = 0;
-	start = 0;
-	if (!s1)
+	i = 0;
+	debut = 0;
+	if (!s1 || !set)
 		return (NULL);
-	if (set == 0)
-		return ((char *)s1);
-	j = ft_strlen(s1);
-	while (s1[start] != '\0' && ft_strchr(set, s1[start]))
-		start++;
-	if (start >= ft_strlen(s1))
-		return (ft_strdup(""));
-	while (j > 0 && s1 && ft_strchr(set, s1[j]))
+	fin = ft_strlen(s1);
+	while (s1[debut] && (ft_strchr(set, (int ) s1[debut]) != NULL))
+		debut++;
+	while (fin > debut && (ft_strchr(set, (int ) s1[fin - 1]) != NULL))
+		fin--;
+	str = (char *)malloc(sizeof(char) * (fin - debut + 1));
+	if (!str)
+		return (0);
+	while (debut < fin)
 	{
-		end++;
-		j--;
+		str[i] = s1[debut];
+		i++;
+		debut++;
 	}
-	j = ft_strlen(s1) - start;
-	return (ft_substr(s1, start, (j - end) + 1));
+	str[i] = '\0';
+	return (str);
 }
