@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 10:15:15 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/04 12:18:03 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/06/04 15:53:10 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,14 +108,26 @@ int	ft_check_redirect_input(char *input)
 int	ft_check_syntax_error(char *input)
 {
 	if (ft_check_pipe(input))
+	{
 		printf("minishell : syntax error near unexpected token `|'\n");
+		return (0);
+	}
 	else if (ft_check_quote_close(input))
+	{
 		printf("minishell : syntax error\n");
+		return (0);
+	}
 	else if (ft_check_redirect_output(input))
+	{
 		printf("minishell : syntax syntax error near"
-			" unexpected token redirection out\n");
+			" unexpected token redirection output\n");
+		return (0);
+	}
 	else if (ft_check_redirect_input(input))
+	{
 		printf("minishell : syntax syntax error near"
-			" unexpected token redirection in\n");
-	return (0);
+			" unexpected token redirection input\n");
+		return (0);
+	}
+	return (1);
 }

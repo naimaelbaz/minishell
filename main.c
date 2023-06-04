@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:44:04 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/06/03 14:37:58 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/06/04 16:27:33 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,19 +14,33 @@
 
 int	main(int ac, char **av)
 {
-	char	*input;
+	char	*input_line;
+	t_token	*token;
+	t_free	*ptr;
 
 	(void)av;
-	(void)ac;
 	if (ac != 1)
 		return (printf("Error\n"), 1);
 	while (1)
 	{
-		input = readline("minishell$ ");
-		if (input)
-			ft_check_syntax_error(input);
-		if (strlen(input) > 0)
-			add_history(input);
-		free (input);
+		token = NULL;
+		ptr = NULL;
+		input_line = readline("minishell$ ");
+		if (!input_line)
+			return (0);
+		if (ft_strlen(input_line))
+			add_history(input_line);
+		if (ft_check_syntax_error(input_line))
+		{
+			ft_lexing(input_line, &token, &ptr);
+			// while (token)
+			// {
+			// 	printf("`%s`\t%d\t%d\n", token->data, token->type, token->state);
+			// 	token = token->next;
+			// }
+			ft_free(&ptr);
+		}
+		free(input_line);
 	}
+	return (0);
 }

@@ -6,7 +6,7 @@
 #    By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/20 12:06:17 by ylachhab          #+#    #+#              #
-#    Updated: 2022/11/10 18:56:34 by ylachhab         ###   ########.fr        #
+#    Updated: 2023/06/04 15:46:33 by ylachhab         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,11 +54,11 @@ SRCS  = ft_atoi.c\
 		ft_substr.c\
 		ft_tolower.c\
 		ft_toupper.c
-		
+
 BSRCS = ft_lstadd_front.c ft_lstadd_back.c \
 		ft_lstlast.c ft_lstnew.c ft_lstsize.c\
-		ft_lstdelone.c ft_lstclear.c ft_lstiter.c  
-		
+		ft_lstdelone.c ft_lstclear.c ft_lstiter.c
+
 OBJS = $(SRCS:.c=.o)
 
 SOBJ = $(BSRCS:.c=.o)
@@ -73,7 +73,7 @@ $(NAME) : $(OBJS)
 
 bonus : all $(SOBJ)
 	$(AR) $(NAME) $(SOBJ)
-    
+
 clean:
 	$(RM) $(OBJS) $(SOBJ)
 
