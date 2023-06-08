@@ -6,11 +6,28 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 12:17:29 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/04 13:06:41 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/06/07 17:52:37 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	ft_check_in_quote(char *input, int i)
+{
+	if (input[i] == '\"')
+	{
+		i++;
+		while (input[i] && input[i] != '\"')
+			i++;
+	}
+	if (input[i] == '\'')
+	{
+		i++;
+		while (input[i] && input[i] != '\'')
+			i++;
+	}
+	return (i);
+}
 
 int	ft_check_redirect_output(char *input)
 {
@@ -19,6 +36,7 @@ int	ft_check_redirect_output(char *input)
 	i = 0;
 	while (input[i] != '\0')
 	{
+		i = ft_check_in_quote(input, i);
 		if (input[i] == '>')
 		{
 			i++;

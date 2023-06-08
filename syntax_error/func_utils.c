@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 10:15:15 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/04 15:53:10 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/06/08 14:33:06 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,8 @@ int	ft_check_quote_close(char *input)
 	return (0);
 }
 
-int	ft_pipe_end(char *input)
+int	ft_pipe_first(char *input)
 {
-	int	len;
-
-	len = ft_strlen((const char *)input);
 	if (input[0] == '|')
 		return (1);
 	return (0);
@@ -56,7 +53,7 @@ int	ft_check_pipe(char *input)
 	int	i;
 
 	i = 0;
-	if (ft_pipe_end(input))
+	if (ft_pipe_first(input))
 		return (1);
 	while ((input[i] >= 9 && input[i] <= 13) || input[i] == 32)
 		i++;
@@ -64,9 +61,9 @@ int	ft_check_pipe(char *input)
 		return (1);
 	while (input[i])
 	{
-		if (input[i] == '|')
+		i = ft_check_in_quote(input, i);
+		if (input[i++] == '|')
 		{
-			i++;
 			while (input[i] && ((input[i] >= 9 && input[i] <= 13)
 					|| input[i] == 32))
 				i++;
@@ -87,6 +84,7 @@ int	ft_check_redirect_input(char *input)
 	i = 0;
 	while (input[i] != '\0')
 	{
+		i = ft_check_in_quote(input, i);
 		if (input[i] == '<')
 		{
 			i++;

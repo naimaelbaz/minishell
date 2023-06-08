@@ -6,13 +6,13 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 11:51:17 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/04 15:45:44 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/06/08 20:58:00 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strtrim(char const *s1, char const *set)
+char	*ft_strtrim(char *s1, char *set)
 {
 	char	*str;
 	size_t	debut;
