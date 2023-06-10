@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   garbage_collector.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nel-baz <nel-baz@student.42.fr>            +#+  +:+       +#+        */
+/*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 11:43:12 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/06/04 15:17:51 by nel-baz          ###   ########.fr       */
+/*   Updated: 2023/06/07 08:49:30 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	ft_free(t_free **ptr)
 		free (*ptr);
 		*ptr = tmp;
 	}
+	(*ptr) = NULL;
 }
 
 t_free	*ft_new_node(void *content)
