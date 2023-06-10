@@ -6,7 +6,7 @@
 #    By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/30 18:39:13 by nel-baz           #+#    #+#              #
-#    Updated: 2023/06/08 21:13:43 by ylachhab         ###   ########.fr        #
+#    Updated: 2023/06/09 16:19:44 by ylachhab         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -21,10 +21,11 @@ SRCS =	main.c \
 		syntax_error/func_utils1.c \
 		lexing/lexing.c \
 		lexing/lexing_utils.c \
+		lexing/lexing_utils1.c \
 		lexing/garbage_collector.c \
-		lexing/expanding.c \
-		lexing/list_tmp.c \
-		lexing/get_env.c
+		expanding/expanding.c \
+		expanding/expanding_utils.c \
+		expanding/get_env.c
 
 OBJS = $(SRCS:.c=.o)
 

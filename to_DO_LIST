@@ -1,2 +1,3 @@
-echo > $x
-echo > $hf
+
+ >> $""
+delete space first and check after redarection if we have empty string => print error msg
