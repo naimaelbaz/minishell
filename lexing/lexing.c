@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 09:39:59 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/09 15:59:00 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/06/10 10:54:59 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,6 +65,8 @@ void	ft_lexing(char *input_line, t_token	**token, t_free	**ptr)
 	t_enum	enu;
 	int		len;
 
+	while (*input_line == WHITE_SPACE)
+			input_line++;
 	while (*input_line)
 	{
 		enu.state = GENERAL;

@@ -6,7 +6,7 @@
 #    By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/30 18:39:13 by nel-baz           #+#    #+#              #
-#    Updated: 2023/06/09 16:19:44 by ylachhab         ###   ########.fr        #
+#    Updated: 2023/06/10 10:34:21 by ylachhab         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,7 +25,8 @@ SRCS =	main.c \
 		lexing/garbage_collector.c \
 		expanding/expanding.c \
 		expanding/expanding_utils.c \
-		expanding/get_env.c
+		expanding/get_env.c \
+		parcer/delete.c
 
 OBJS = $(SRCS:.c=.o)
 

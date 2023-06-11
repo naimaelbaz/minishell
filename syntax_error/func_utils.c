@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 10:15:15 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/08 14:33:06 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/06/10 16:24:33 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,6 @@ int	ft_check_pipe(char *input)
 			if (input[i] == '\0')
 				return (1);
 		}
-		i++;
 	}
 	return (0);
 }

@@ -6,16 +6,16 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:44:04 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/06/10 08:49:12 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/06/10 15:56:50 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// void	pop()
-// {
-// 	system("leaks minishell");
-// }
+void	pop()
+{
+	system("leaks minishell");
+}
 
 int	main(int ac, char **av, char **env)
 {
@@ -42,6 +42,8 @@ int	main(int ac, char **av, char **env)
 			ft_lexing(input_line, &token, &ptr);
 			expand = ft_get_env(&ptr, env);
 			ft_expanding(&token, expand, &ptr);
+			ft_delete(&token, &ptr);
+			ft_join_string(&token);
 			while (token)
 			{
 				printf("`%s`\t%d\t%d\n", token->data, token->type, token->state);

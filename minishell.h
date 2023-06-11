@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:44:30 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/06/10 08:42:50 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/06/10 16:50:28 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,7 +81,7 @@ typedef struct s_expand
 	struct s_expand	*next;
 }	t_expand;
 
-// syntax_error_functions folder syntax_error
+// syntax_error_functions in folder syntax_error
 
 int			ft_check_redirect_input(char *input);
 int			ft_check_redirect_output(char *input);
@@ -91,14 +91,14 @@ int			ft_check_quote_close(char *input);
 int			ft_check_syntax_error(char *input);
 int			ft_check_in_quote(char *input, int i);
 
-// garbadge_collector folder lexing
+// garbadge_collector in folder lexing
 
 void		ft_free(t_free **ptr);
 void		ft_add_to_free(t_free **lst, t_free *new);
 t_free		*ft_new_node(void *content);
 void		*ft_malloc(t_free **ptr, int size);
 
-// lexing_functions folder lexing
+// lexing_functions in folder lexing
 
 void		ft_lexing(char *input_line, t_token	**token, t_free **ptr);
 int			ft_redirection(t_enum *enu, char **input_line, t_free **ptr,
@@ -115,7 +115,7 @@ int			ft_is_special(char c);
 int			ft_check_line(char c);
 int			ft_get_length(char *input_line);
 
-//expanding variables folder expanding
+// expanding variables in folder expanding
 
 char		*ft_strcpy(char *dest, char *src);
 int			ft_strcmp(char *s1, char *s2);
@@ -125,5 +125,10 @@ t_expand	*ft_get_env(t_free **ptr, char **env);
 void		ft_expanding(t_token **token, t_expand *expand, t_free **ptr);
 char		*ft_split_expand(char *s, t_expand *expand);
 int			ft_is_enum(char c);
+
+// delete in folder parcer
+
+void		ft_delete(t_token **token, t_free **ptr);
+void		ft_join_string(t_token **token);
 
 #endif
