@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 10:07:54 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/10 17:47:02 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/06/11 09:12:32 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@ char	*ft_join(char *s1, char *s2)
 void	ft_join_string(t_token **token)
 {
 	t_token	*head;
+	char	*str;
 
 	head = *token;
 	while (head)
@@ -55,8 +56,10 @@ void	ft_join_string(t_token **token)
 			&& head->data[0] != PIPE && head->data[0] != RED_IN
 			&& head->data[0] != RED_OUT)
 		{
-			head->data = ft_join(head->data, head->next->data);
+			str = ft_join(head->data, head->next->data);
+			head->data = str;
 			head->next = head->next->next;
+			free (str);
 			continue ;
 		}
 		head = head->next;

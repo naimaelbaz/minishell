@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:44:30 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/06/10 16:50:28 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/06/11 15:39:20 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,17 @@ typedef struct s_expand
 	struct s_expand	*next;
 }	t_expand;
 
+//
+
+typedef struct s_cmd
+{
+	char			*cmd;
+	int				input;
+	int				output;
+	char			**arg;
+	struct s_cmd	*next;
+}	t_cmd;
+
 // syntax_error_functions in folder syntax_error
 
 int			ft_check_redirect_input(char *input);
@@ -130,5 +141,6 @@ int			ft_is_enum(char c);
 
 void		ft_delete(t_token **token, t_free **ptr);
 void		ft_join_string(t_token **token);
+void		ft_parcer(t_token *token, t_cmd **cmd, t_free **ptr);
 
 #endif
