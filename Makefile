@@ -14,7 +14,7 @@ NAME = minishell
 
 CC = cc -g
 
-FLAGS = -Wall -Werror -Wextra
+FLAGS = #-Wall -Werror -Wextra
 
 SRCS =	main.c \
 		syntax_error/func_utils.c \

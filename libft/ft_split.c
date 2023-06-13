@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/25 08:30:15 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/04 15:44:48 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/06/13 08:31:54 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ static	char	**ft_do(char const *s, int rows, char c, char **str)
 	return (str);
 }
 
-char	**ft_split(char const *s, char c)
+char	**ft_split(char *s, char c)
 {
 	char	**str;
 	int		rows;

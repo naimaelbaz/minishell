@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:44:30 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/06/11 15:39:20 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/06/13 19:27:11 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,5 +142,11 @@ int			ft_is_enum(char c);
 void		ft_delete(t_token **token, t_free **ptr);
 void		ft_join_string(t_token **token);
 void		ft_parcer(t_token *token, t_cmd **cmd, t_free **ptr);
-
+char		*ft_get_arg(t_token *token, t_free **ptr);
+char		*ft_get_cmd(t_token *tmp);
+int			ft_count_pipe(t_token *token);
+void		ft_open_pipe(t_cmd **cmd);
+//to test
+int			ft_get_len(t_token *token);
+char 		**split_args(t_token	*token);
 #endif
