@@ -6,21 +6,20 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 11:39:41 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/13 19:28:19 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/06/13 20:44:53 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-void print__(t_token *t);
-t_cmd	*ft_new_cmd(t_free **ptr, char *content)
+
+t_cmd	*ft_new_cmd(t_free **ptr, void *content)
 {
 	t_cmd	*node;
-
 
 	node = ft_malloc(ptr, sizeof(t_cmd));
 	if (!node)
 		return (NULL);
-    node->cmd = content;
+	node->cmd = content;
 	node->input = 0;
 	node->output = 1;
 	node->next = NULL;
@@ -214,17 +213,6 @@ void	ft_open_files(t_token **tmp, t_cmd **new)
 	}
 }
 
-void print__(t_token *t)
-{
-	puts("-------");
-	while (t)
-	{
-		puts(t->data);
-		t = t->next;
-	}
-	puts("-------");
-}
-
 void	ft_parcer(t_token *token, t_cmd **cmd, t_free **ptr)
 {
 	t_cmd	*new;
@@ -234,24 +222,22 @@ void	ft_parcer(t_token *token, t_cmd **cmd, t_free **ptr)
 
 	tmp = token;
 	countp = ft_count_pipe(tmp) + 1;
-	// print__(tmp);
 	while (tmp)
 	{
 		if (countp > 0 && tmp->type != PIPE)
 		{
 			i = 0;
 			new = ft_new_cmd(ptr, ft_strdup(ft_get_cmd(tmp)));
-
-			 ft_add_cmd(cmd, new);
-//			 new->arg = ft_split(ft_get_arg(tmp, ptr), ' ');
-//			 while (new->arg[i])
-//			 {
-//			 	ft_add_to_free(ptr, ft_new_node(new->arg[i]));
-//			 	i++;
-//			 }
+			ft_add_cmd(cmd, new);
+			// new->arg = ft_split(ft_get_arg(tmp, ptr), ' ');
+			// while (new->arg[i])
+			// {
+			// 	ft_add_to_free(ptr, ft_new_node(new->arg[i]));
+			// 	i++;
+			// }
 			new->arg = split_args(tmp);
-			 ft_add_to_free(ptr, ft_new_node(new->arg));
-			 ft_open_files(&tmp, &new);
+			ft_add_to_free(ptr, ft_new_node(new->arg));
+			ft_open_files(&tmp, &new);
 			countp--;
 			if (countp == 0)
 				break ;

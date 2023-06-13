@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 10:07:54 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/13 18:45:42 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/06/13 20:50:23 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,7 @@ void	ft_join_string(t_token **token)
 			&& head->next->data[0] != PIPE && head->next->data[0] != RED_IN
 			&& head->next->data[0] != RED_OUT
 			&& head->data[0] != WHITE_SPACE
+			&& head->next->data[0] != WHITE_SPACE
 			&& head->data[0] != PIPE && head->data[0] != RED_IN
 			&& head->data[0] != RED_OUT)
 		{
