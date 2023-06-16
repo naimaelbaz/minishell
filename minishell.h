@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:44:30 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/06/13 19:27:11 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/06/15 19:38:50 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,11 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <fcntl.h>
+# include <sys/stat.h>
 
 # include "./libft/libft.h"
+
+# define HEREDOC "here_doc"
 
 enum e_state
 {
@@ -140,13 +143,31 @@ int			ft_is_enum(char c);
 // delete in folder parcer
 
 void		ft_delete(t_token **token, t_free **ptr);
-void		ft_join_string(t_token **token);
-void		ft_parcer(t_token *token, t_cmd **cmd, t_free **ptr);
-char		*ft_get_arg(t_token *token, t_free **ptr);
-char		*ft_get_cmd(t_token *tmp);
-int			ft_count_pipe(t_token *token);
+void		ft_join_string(t_token **token, t_free **ptr);
+
+// to_execution in folder parcer
+
+char		**ft_get_arg(t_token *token, t_free **newptr);
+void		ft_parcer(t_token *token, t_cmd **cmd, t_free **ptr,
+				t_expand *expand);
 void		ft_open_pipe(t_cmd **cmd);
-//to test
-int			ft_get_len(t_token *token);
-char 		**split_args(t_token	*token);
+char		*ft_join(char *s1, char *s2);
+
+// parcer_utils in folder parcer
+
+t_cmd		*ft_new_cmd(t_free **ptr, void *content);
+void		ft_add_cmd(t_cmd **lst, t_cmd *new);
+int			ft_count_pipe(t_token	*token);
+char		*ft_get_cmd(t_token *tmp);
+int			ft_len(t_token *token);
+
+// parcer_utils1 in folder parcer
+
+char		**ft_get_arg(t_token *token, t_free **newptr);
+char		*check_existfile(void);
+void		ft_expand_here_doc(char **str, t_expand *expand);
+void		ft_expand_in_heredoc(char **input, t_expand	*expand);
+void		ft_open_pipe(t_cmd **cmd);
+void		ft_open_files(t_token **tmp, t_cmd **new, t_expand *expand);
+
 #endif

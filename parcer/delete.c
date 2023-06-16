@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 10:07:54 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/13 20:50:23 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/06/15 10:49:26 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,9 @@ char	*ft_join(char *s1, char *s2)
 	return (str);
 }
 
-void	ft_join_string(t_token **token)
+void	ft_join_string(t_token **token, t_free **ptr)
 {
 	t_token	*head;
-	char	*str;
 
 	head = *token;
 	while (head)
@@ -56,10 +55,13 @@ void	ft_join_string(t_token **token)
 			&& head->data[0] != PIPE && head->data[0] != RED_IN
 			&& head->data[0] != RED_OUT)
 		{
-			str = ft_join(head->data, head->next->data);
-			head->data = str;
+			head->data = ft_join(head->data, head->next->data);
+			if (head->next->state == IN_D_QOUTE)
+				head->state = IN_D_QOUTE;
+			if (head->next->state == IN_QOUTE)
+				head->state = IN_QOUTE;
+			ft_add_to_free(ptr, ft_new_node(head->data));
 			head->next = head->next->next;
-			free (str);
 			continue ;
 		}
 		head = head->next;
@@ -82,6 +84,11 @@ void	ft_delete(t_token **token, t_free **ptr)
 		if (head->state == IN_QOUTE)
 		{
 			head->data = ft_strtrim(head->data, "\'");
+			ft_add_to_free(ptr, ft_new_node(head->data));
+		}
+		if (head->state == IN_D_QOUTE)
+		{
+			head->data = ft_strtrim(head->data, "\"");
 			ft_add_to_free(ptr, ft_new_node(head->data));
 		}
 		head = head->next;

@@ -3,3 +3,6 @@ delete space first and check after redarection if we have empty string => print 
 
 git pull
 git merge branch name
+
+minishell$ $@
+{(null)} => null means don't do enything 
