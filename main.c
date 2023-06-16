@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:44:04 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/06/15 11:27:46 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/06/16 12:00:45 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	main(int ac, char **av, char **env)
 		token = NULL;
 		ptr = NULL;
 		cmd = NULL;
-		input_line = readline("minishell$ ");
+		input_line = readline("\e[38;5;010mminishell$ \e[0;00m");
 		if (!input_line)
 			return (0);
 		if (ft_strlen(input_line))

@@ -5,4 +5,6 @@ git pull
 git merge branch name
 
 minishell$ $@
-{(null)} => null means don't do enything 
+{(null)} => null means don't do enything
+
+cat < $a

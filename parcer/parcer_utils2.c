@@ -6,21 +6,23 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 19:39:26 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/15 19:42:38 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/06/16 11:36:18 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-void	ft_no_file(char *f)
+void	ft_no_file(char **f)
 {
-	char	*st;
+	// char	*st;
 
-	if (f)
+	if (*f)
 	{
-		st = ft_join(f, ": No such file or directory\n");
-		ft_putstr_fd(st, 2);
-		free (st);
+		// st = ft_join(*f, ": No such file or directory\n");
+		ft_putstr_fd("minishell: ", 2);
+		ft_putstr_fd(*f, 2);
+		ft_putstr_fd(" : No such file or directory\n", 2);
+		// free (st);
 	}
 }
 
@@ -45,7 +47,7 @@ void	ft_put_infile(t_token **tmp, t_cmd **new, t_expand *expand)
 	}
 }
 
-void	ft_input_red(t_token **tmp, t_cmd **new, t_expand *expand, char *f)
+void	ft_input_red(t_token **tmp, t_cmd **new, t_expand *expand, char **f)
 {
 	char	*str;
 	int		i;
@@ -62,39 +64,59 @@ void	ft_input_red(t_token **tmp, t_cmd **new, t_expand *expand, char *f)
 		ft_put_infile(tmp, new, expand);
 		i = 1;
 	}
-	if ((*tmp) && (*tmp)->type == RED_IN && !f)
+	if ((*tmp) && (*tmp)->type == RED_IN && !(*f))
 	{
 		i == 1 && close((*new)->input);
 		(*tmp) = (*tmp)->next;
 		if ((*tmp)->type == WHITE_SPACE)
 			(*tmp) = (*tmp)->next;
+		if ((*tmp)->data[0] == '\0' && (*tmp)->state == DOLLAR_SIGN)
+		{
+			(*new)->input = -1;
+			ft_putstr_fd("minishell: : ambiguous redirect\n", 2);
+			return ;
+		}
 		(*new)->input = open((*tmp)->data, O_RDONLY | O_TRUNC, 0644);
-		(*new)->input == -1 && (f = (*tmp)->data);
+		(*new)->input == -1 && ((*f) = (*tmp)->data);
 		i = 1;
 	}
 }
 
-void	ft_output_red(t_token **tmp, t_cmd **new, char *f)
+void	ft_output_red(t_token **tmp, t_cmd **new, char **f)
 {
 	int	j;
 
 	j = 0;
-	if ((*tmp) && (*tmp)->type == RED_OUT && !f)
+	if ((*tmp) && (*tmp)->type == RED_OUT && !(*f))
 	{
 		j == 1 && close((*new)->output);
 		(*tmp) = (*tmp)->next;
 		if ((*tmp)->type == WHITE_SPACE)
 			(*tmp) = (*tmp)->next;
+		if ((*tmp)->data[0] == '\0' && (*tmp)->state == DOLLAR_SIGN)
+		{
+			(*new)->output = -1;
+			ft_putstr_fd(": ambiguous redirect\n", 2);
+			return ;
+		}
 		(*new)->output = open((*tmp)->data, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		(*new)->output == -1 && ((*f) = (*tmp)->data);
 		j = 1;
 	}
-	else if ((*tmp) && (*tmp)->type == RED_APP_OUT && !f)
+	else if ((*tmp) && (*tmp)->type == RED_APP_OUT && !(*f))
 	{
 		j == 1 && close((*new)->output);
 		(*tmp) = (*tmp)->next;
 		if ((*tmp)->type == WHITE_SPACE)
 			(*tmp) = (*tmp)->next;
+		if ((*tmp)->data[0] == '\0' && (*tmp)->state == DOLLAR_SIGN)
+		{
+			(*new)->output = -1;
+			ft_putstr_fd(": ambiguous redirect\n", 2);
+			return ;
+		}
 		(*new)->output = open((*tmp)->data, O_CREAT | O_WRONLY, 0644);
+		(*new)->output == -1 && ((*f) = (*tmp)->data);
 		j = 1;
 	}
 }
@@ -106,9 +128,9 @@ void	ft_open_files(t_token **tmp, t_cmd **new, t_expand *expand)
 	f = NULL;
 	while ((*tmp) && (*tmp)->type != PIPE)
 	{
-		ft_input_red(tmp, new, expand, f);
-		ft_output_red(tmp, new, f);
+		ft_input_red(tmp, new, expand, &f);
+		ft_output_red(tmp, new, &f);
 		(*tmp) = (*tmp)->next;
 	}
-	ft_no_file(f);
+	ft_no_file(&f);
 }
