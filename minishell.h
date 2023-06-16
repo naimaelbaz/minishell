@@ -6,7 +6,7 @@
 /*   By: nel-baz <nel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:44:30 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/06/11 18:05:34 by nel-baz          ###   ########.fr       */
+/*   Updated: 2023/06/16 15:19:28 by nel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,11 @@
 # include <stdlib.h>
 # include <stdio.h>
 # include <fcntl.h>
+# include <sys/stat.h>
+
+# include "./libft/libft.h"
+
+# define HEREDOC "here_doc"
 
 enum e_state
 {
@@ -78,7 +83,18 @@ typedef struct s_expand
 	struct s_expand	*next;
 }	t_expand;
 
-// syntax_error_functions folder syntax_error
+//
+
+typedef struct s_cmd
+{
+	char			*cmd;
+	int				input;
+	int				output;
+	char			**arg;
+	struct s_cmd	*next;
+}	t_cmd;
+
+// syntax_error_functions in folder syntax_error
 
 int			ft_check_redirect_input(char *input);
 int			ft_check_redirect_output(char *input);
@@ -88,14 +104,14 @@ int			ft_check_quote_close(char *input);
 int			ft_check_syntax_error(char *input);
 int			ft_check_in_quote(char *input, int i);
 
-// garbadge_collector folder lexing
+// garbadge_collector in folder lexing
 
 void		ft_free(t_free **ptr);
 void		ft_add_to_free(t_free **lst, t_free *new);
 t_free		*ft_new_node(void *content);
 void		*ft_malloc(t_free **ptr, int size);
 
-// lexing_functions folder lexing
+// lexing_functions in folder lexing
 
 void		ft_lexing(char *input_line, t_token	**token, t_free **ptr);
 int			ft_redirection(t_enum *enu, char **input_line, t_free **ptr,
@@ -112,7 +128,7 @@ int			ft_is_special(char c);
 int			ft_check_line(char c);
 int			ft_get_length(char *input_line);
 
-//expanding variables folder expanding
+// expanding variables in folder expanding
 
 char		*ft_strcpy(char *dest, char *src);
 int			ft_strcmp(char *s1, char *s2);
@@ -122,5 +138,35 @@ t_expand	*ft_get_env(t_free **ptr, char **env);
 void		ft_expanding(t_token **token, t_expand *expand, t_free **ptr);
 char		*ft_split_expand(char *s, t_expand *expand);
 int			ft_is_enum(char c);
+
+// delete in folder parcer
+
+void		ft_delete(t_token **token, t_free **ptr);
+void		ft_join_string(t_token **token, t_free **ptr);
+
+// to_execution in folder parcer
+
+char		**ft_get_arg(t_token *token, t_free **newptr);
+void		ft_parcer(t_token *token, t_cmd **cmd, t_free **ptr,
+				t_expand *expand);
+void		ft_open_pipe(t_cmd **cmd);
+char		*ft_join(char *s1, char *s2);
+
+// parcer_utils in folder parcer
+
+t_cmd		*ft_new_cmd(t_free **ptr, void *content);
+void		ft_add_cmd(t_cmd **lst, t_cmd *new);
+int			ft_count_pipe(t_token	*token);
+char		*ft_get_cmd(t_token *tmp);
+int			ft_len(t_token *token);
+
+// parcer_utils1 in folder parcer
+
+char		**ft_get_arg(t_token *token, t_free **newptr);
+char		*check_existfile(void);
+void		ft_expand_here_doc(char **str, t_expand *expand);
+void		ft_expand_in_heredoc(char **input, t_expand	*expand);
+void		ft_open_pipe(t_cmd **cmd);
+void		ft_open_files(t_token **tmp, t_cmd **new, t_expand *expand);
 
 #endif

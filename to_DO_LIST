@@ -1,3 +1,10 @@
-
  >> $""
 delete space first and check after redarection if we have empty string => print error msg
+
+git pull
+git merge branch name
+
+minishell$ $@
+{(null)} => null means don't do enything
+
+cat < $a

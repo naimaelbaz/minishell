@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 10:01:01 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/10 08:48:42 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/06/14 14:54:00 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,6 +98,8 @@ void	ft_expanding(t_token **token, t_expand *expand, t_free **ptr)
 				|| (head->prev->prev && head->prev->prev->type == HERE_DOC)))
 		{
 			head = head->next;
+			while (head && head->type != WHITE_SPACE)
+				head = head->next;
 			continue ;
 		}
 		else if (head->state == IN_D_QOUTE)
