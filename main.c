@@ -6,7 +6,7 @@
 /*   By: nel-baz <nel-baz@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:44:04 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/06/10 09:05:36 by nel-baz          ###   ########.fr       */
+/*   Updated: 2023/06/11 18:28:26 by nel-baz          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int	main(int ac, char **av, char **env)
 		{
 			ft_lexing(input_line, &token, &ptr);
 			expand = ft_get_env(&ptr, env);
-			ft_expanding(&token, expand, &ptr);
+			// ft_expanding(&token, expand, &ptr);
 			while (token)
 			{
 				printf("`%s`\t%d\t%d\n", token->data, token->type, token->state);
