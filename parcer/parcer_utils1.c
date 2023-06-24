@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:50:15 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/15 19:40:48 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/06/24 11:04:52 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	**ft_get_arg(t_token *token, t_free **newptr)
 	args = ft_malloc(newptr, (sizeof(char *) * (ft_len(token) + 1)));
 	while (token && token->type != PIPE)
 	{
-		if (token->data[0] == '>' || token->data[0] == '<')
+		if (token->data && (token->data[0] == '>' || token->data[0] == '<'))
 		{
 			token = token->next;
 			if (token->type == WHITE_SPACE)
@@ -32,7 +32,7 @@ char	**ft_get_arg(t_token *token, t_free **newptr)
 				break ;
 			continue ;
 		}
-		if (token->type == WORD)
+		if (token->data && token->type == WORD)
 			args[i++] = (token->data);
 		token = token->next;
 	}
@@ -44,10 +44,16 @@ char	*check_existfile(void)
 	static int	c;
 	struct stat	state;
 	char		*str;
+	char		*ptr;
 
 	str = "/tmp/here_doc";
 	if (stat(str, &state) == 0)
-		str = ft_join(str, ft_itoa(c++));
+	{
+		ptr = ft_itoa(c);
+		str = ft_join(str, ptr);
+		free (ptr);
+		c++;
+	}
 	return (str);
 }
 

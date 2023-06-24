@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 10:07:54 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/15 10:49:26 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/06/24 11:31:53 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,24 @@ char	*ft_join(char *s1, char *s2)
 	return (str);
 }
 
+int	ft_join_check(t_token	*head)
+{
+	if (head->next
+		&& head->next->data[0] != PIPE && head->next->data[0] != RED_IN
+		&& head->next->data[0] != RED_OUT
+		&& ((head->next->data[0] == WHITE_SPACE
+				&& (head->next->state == IN_D_QOUTE
+					|| head->next->state == IN_QOUTE))
+			|| head->next->data[0] != WHITE_SPACE)
+		&& ((head->data[0] == WHITE_SPACE
+				&& (head->state == IN_D_QOUTE || head->state == IN_QOUTE))
+			|| head->data[0] != WHITE_SPACE)
+		&& head->data[0] != PIPE && head->data[0] != RED_IN
+		&& head->data[0] != RED_OUT)
+		return (1);
+	return (0);
+}
+
 void	ft_join_string(t_token **token, t_free **ptr)
 {
 	t_token	*head;
@@ -47,13 +65,7 @@ void	ft_join_string(t_token **token, t_free **ptr)
 	head = *token;
 	while (head)
 	{
-		if (head->next
-			&& head->next->data[0] != PIPE && head->next->data[0] != RED_IN
-			&& head->next->data[0] != RED_OUT
-			&& head->data[0] != WHITE_SPACE
-			&& head->next->data[0] != WHITE_SPACE
-			&& head->data[0] != PIPE && head->data[0] != RED_IN
-			&& head->data[0] != RED_OUT)
+		if (ft_join_check(head))
 		{
 			head->data = ft_join(head->data, head->next->data);
 			if (head->next->state == IN_D_QOUTE)

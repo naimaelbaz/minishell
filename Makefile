@@ -6,7 +6,7 @@
 #    By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/30 18:39:13 by nel-baz           #+#    #+#              #
-#    Updated: 2023/06/15 19:41:15 by ylachhab         ###   ########.fr        #
+#    Updated: 2023/06/24 19:10:15 by ylachhab         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell
 
 CC = cc -g
 
-FLAGS = -Wall -Werror -Wextra
+FLAGS = -Wall -Werror -Wextra -g -fsanitize=address
 
 SRCS =	main.c \
 		syntax_error/func_utils.c \
@@ -30,7 +30,13 @@ SRCS =	main.c \
 		parcer/parcer.c \
 		parcer/parcer_utils.c \
 		parcer/parcer_utils1.c \
-		parcer/parcer_utils2.c
+		parcer/parcer_utils2.c \
+		parcer/parcer_utils3.c \
+		builtins/built.c \
+		builtins/built1.c \
+		builtins/export.c \
+		builtins/export_utils.c \
+		builtins/export_utils1.c
 
 OBJS = $(SRCS:.c=.o)
 

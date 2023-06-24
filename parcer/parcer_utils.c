@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 11:39:41 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/15 19:39:59 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/06/23 18:57:15 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ char	*ft_get_cmd(t_token	*token)
 {
 	while (token && token->type != PIPE)
 	{
-		if (token->data[0] == '>' || token->data[0] == '<')
+		if (token->data && (token->data[0] == '>' || token->data[0] == '<'))
 		{
 			token = token->next;
 			if (token->type == WHITE_SPACE)
@@ -70,7 +70,7 @@ char	*ft_get_cmd(t_token	*token)
 				break ;
 			continue ;
 		}
-		if (token->type == WORD && token->data[0] != '\0')
+		if (token->data && token->type == WORD && token->data[0] != '\0')
 			return (token->data);
 		token = token->next;
 	}
@@ -84,7 +84,7 @@ int	ft_len(t_token *token)
 	len = 0;
 	while (token && token->type != PIPE)
 	{
-		if (token->data[0] == '>' || token->data[0] == '<')
+		if (token->data && (token->data[0] == '>' || token->data[0] == '<'))
 		{
 			token = token->next;
 			if (token->type == WHITE_SPACE)
@@ -95,7 +95,7 @@ int	ft_len(t_token *token)
 				break ;
 			continue ;
 		}
-		if (token->type == WORD)
+		if (token->data && token->type == WORD)
 			len++;
 		token = token->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:44:30 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/06/15 19:38:50 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/06/24 14:32:30 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <readline/history.h>
 # include <fcntl.h>
 # include <sys/stat.h>
+# include <limits.h>
 
 # include "./libft/libft.h"
 
@@ -82,6 +83,7 @@ typedef struct s_expand
 	char			*key;
 	char			*value;
 	struct s_expand	*next;
+	struct s_expand	*prev;
 }	t_expand;
 
 //
@@ -94,6 +96,18 @@ typedef struct s_cmd
 	char			**arg;
 	struct s_cmd	*next;
 }	t_cmd;
+
+//
+
+typedef struct s_export
+{
+	int		i;
+	int		j;
+	int		nb;
+	int		plus;
+	char	*key;
+	char	*val;
+}	t_export;
 
 // syntax_error_functions in folder syntax_error
 
@@ -132,6 +146,8 @@ int			ft_get_length(char *input_line);
 // expanding variables in folder expanding
 
 char		*ft_strcpy(char *dest, char *src);
+t_expand	*ft_exp_new(char *env, t_free **ptr);
+void		ft_exp_add_back(t_expand **lst, t_expand *new);
 int			ft_strcmp(char *s1, char *s2);
 char		*ft_get_value(char *sub, t_expand *expand, int a);
 int			ft_is_spec(char c);
@@ -169,5 +185,28 @@ void		ft_expand_here_doc(char **str, t_expand *expand);
 void		ft_expand_in_heredoc(char **input, t_expand	*expand);
 void		ft_open_pipe(t_cmd **cmd);
 void		ft_open_files(t_token **tmp, t_cmd **new, t_expand *expand);
+void		ft_red_in(t_token **tmp, t_cmd **new, char **f);
+void		ft_input_red(t_token **tmp, t_cmd **new,
+				t_expand *expand, char **f);
+
+// built in folder builtins
+
+int			ft_search(char **str);
+void		ft_echo(int i, char **arg);
+void		ft_pwd(int i);
+t_expand	*ft_empty_env(t_free **ptr);
+void		ft_env(t_expand *expand, int i);
+void		ft_export(t_expand *expand, int i, t_free **ptr);
+t_expand	*ft_add_export(t_expand *expand, char **arg, t_free **ptr);
+
+void		ft_builtins(t_cmd *cmd, t_expand **expand, t_free **new_ptr);
+t_expand	*ft_export_new(char *key, char *val, t_free **ptr);
+int			ft_check_arg(char *key, char *val, t_expand **expand, int plus);
+int			ft_check_syntax(char *key);
+void		ft_print_error(char *arg);
+int			ft_check(char *arg, t_export *export, t_free **ptr);
+void		ft_get_key(char *arg, t_export *export);
+void		ft_get_key2(char *arg, t_export *export, t_free **ptr);
+t_expand	*ft_add_export(t_expand *expand, char **arg, t_free **ptr);
 
 #endif
