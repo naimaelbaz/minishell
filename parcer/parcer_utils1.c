@@ -6,22 +6,46 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:50:15 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/15 19:40:48 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/09 16:02:54 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+void	ft_get_word(t_token *token, t_free **newptr, char **args, int *i)
+{
+	int		j;
+	char	**tmp;
+
+	j = 0;
+	if (token->state == DOLLAR_SIGN)
+	{
+		tmp = ft_split(token->data, ' ');
+		ft_add_to_free(newptr, ft_new_node(tmp));
+		while (tmp[j])
+		{
+			args[*i] = tmp[j];
+			ft_add_to_free(newptr, ft_new_node(tmp[j]));
+			(*i)++;
+			j++;
+		}
+	}
+	else
+		args[(*i)++] = (token->data);
+}
+
 char	**ft_get_arg(t_token *token, t_free **newptr)
 {
 	char	**args;
+	char	**tmp;
 	int		i;
 
 	i = 0;
-	args = ft_malloc(newptr, (sizeof(char *) * (ft_len(token) + 1)));
+	tmp = NULL;
+	args = ft_malloc(newptr, (sizeof(char *) * (ft_len(token, newptr) + 1)));
 	while (token && token->type != PIPE)
 	{
-		if (token->data[0] == '>' || token->data[0] == '<')
+		if (token->data && (token->data[0] == '>' || token->data[0] == '<'))
 		{
 			token = token->next;
 			if (token->type == WHITE_SPACE)
@@ -32,8 +56,8 @@ char	**ft_get_arg(t_token *token, t_free **newptr)
 				break ;
 			continue ;
 		}
-		if (token->type == WORD)
-			args[i++] = (token->data);
+		if (token->data && token->type == WORD)
+			ft_get_word(token, newptr, args, &i);
 		token = token->next;
 	}
 	return (args[i] = NULL, args);
@@ -44,10 +68,16 @@ char	*check_existfile(void)
 	static int	c;
 	struct stat	state;
 	char		*str;
+	char		*ptr;
 
-	str = "/tmp/here_doc";
+	str = ft_strdup("/tmp/here_doc");
 	if (stat(str, &state) == 0)
-		str = ft_join(str, ft_itoa(c++));
+	{
+		ptr = ft_itoa(c);
+		str = ft_strjoin(str, ptr);
+		free (ptr);
+		c++;
+	}
 	return (str);
 }
 
@@ -60,12 +90,6 @@ void	ft_expand_here_doc(char **str, t_expand *expand)
 	}
 	else
 		*str = ft_get_value(*str, expand, 0);
-}
-
-void	ft_expand_in_heredoc(char **input, t_expand	*expand)
-{
-	if ((*input)[0] == '$' && ((*input)[1] != '\0' && (*input)[1] != '?'))
-		ft_expand_here_doc(input, expand);
 }
 
 void	ft_open_pipe(t_cmd **cmd)

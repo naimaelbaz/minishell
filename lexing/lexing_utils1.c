@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 15:55:50 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/09 15:59:32 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/06/24 14:34:46 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ void	add_back(t_token **token, t_token *new)
 	t_token	*ptr;
 
 	ptr = *token;
+	if (!token || !new)
+		return ;
 	if (!ptr)
 	{
 		*token = new;

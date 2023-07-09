@@ -1,40 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   cd_utils.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/10 21:34:53 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/09 11:40:10 by ylachhab         ###   ########.fr       */
+/*   Created: 2023/07/08 10:05:26 by ylachhab          #+#    #+#             */
+/*   Updated: 2023/07/08 11:45:58 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-int	ft_atoi(const char *str)
+char	*ft_search_val(char *key, t_expand	*expand)
 {
-	int			i;
-	int			sign;
-	long		result;
+	while (expand)
+	{
+		if (!ft_strcmp(expand->key, key))
+			return (expand->value);
+		expand = expand->next;
+	}
+	return (NULL);
+}
 
-	i = 0;
-	sign = 1;
-	result = 0;
-	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
-		i++;
-	if (str[i] == '-')
+void	ft_set_val(char *key, char *value, t_expand **expand)
+{
+	t_expand	*tmp;
+
+	tmp = *expand;
+	while (tmp)
 	{
-			sign = -1;
-			i++;
+		if (!ft_strcmp(tmp->key, key))
+		{
+			tmp->value = value;
+			break ;
+		}
+		tmp = tmp->next;
 	}
-	else if (str[i] == '+')
-				i++;
-	while (str[i] != '\0' && (str[i] >= '0' && str[i] <= '9'))
-	{
-		result += str[i] - 48;
-		result *= 10;
-		i++;
-	}
-	return (result * sign);
 }

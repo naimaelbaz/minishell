@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 10:01:01 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/14 14:54:00 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/09 13:15:21 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,6 +110,11 @@ void	ft_expanding(t_token **token, t_expand *expand, t_free **ptr)
 		else if (head->state == DOLLAR_SIGN && head->data[0] == ENV_VAR
 			&& (head->data[1] != '\0' && head->data[1] != '?'))
 			ft_dollarsign_inword(&head->data, expand, ptr);
+		else if (!ft_strcmp(head->data, "$?"))
+		{
+			head->data = ft_itoa(exit_global);
+			ft_add_to_free(ptr, ft_new_node(head->data));
+		}
 		head = head->next;
 	}
 }

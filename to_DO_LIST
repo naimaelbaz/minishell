@@ -1,10 +1,24 @@
- >> $""
-delete space first and check after redarection if we have empty string => print error msg
+
 
 git pull
 git merge branch name
 
-minishell$ $@
-{(null)} => null means don't do enything
 
-cat < $a
+[ls -la] => split args;
+
+// cd without args
+if ()
+// TODO search HOME
+	if (chdir(expand->value) == -1)
+	{
+	}
+		//ERROR
+// elif
+// TODO check if args == - or ~
+// change directory chdir
+
+lawn "\e[38;5;010mminishell$ \e[0;00m" khaso ythayad
+
+make file relink libft
+
+check if PATH is execeste

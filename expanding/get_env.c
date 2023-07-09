@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 17:21:25 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/08 17:21:27 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/06/24 14:35:07 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,7 @@ t_expand	*ft_exp_new(char *env, t_free **ptr)
 			new->value = ft_substr(env, i + 1, ft_strlen(env));
 			ft_add_to_free(ptr, ft_new_node(new->value));
 			new->next = NULL;
+			new->prev = NULL;
 			break ;
 		}
 		i++;
@@ -41,16 +42,17 @@ void	ft_exp_add_back(t_expand **lst, t_expand *new)
 {
 	t_expand	*ptr;
 
+	ptr = *lst;
 	if (!lst || !new)
 		return ;
-	ptr = *lst;
 	if (!*lst)
 		*lst = new;
 	else
 	{
-		while (ptr && ptr->next != NULL)
-			ptr = ptr -> next;
-		ptr -> next = new;
+		while (ptr->next != NULL)
+			ptr = ptr->next;
+		ptr->next = new;
+		new->prev = ptr;
 	}
 }
 

@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 16:01:39 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/09 19:01:55 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/08 19:48:53 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,9 @@ char	*ft_get_value(char *sub, t_expand *expand, int a)
 	{
 		if (!ft_strcmp(sub + 1, expand->key))
 		{
-			str = malloc(sizeof(char) * ft_strlen(expand->value));
+			if (!expand->value)
+				break ;
+			str = malloc(sizeof(char) * (ft_strlen(expand->value) + 1));
 			str = ft_strcpy(str, expand->value);
 			c++;
 		}

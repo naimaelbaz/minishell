@@ -6,60 +6,49 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 11:39:41 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/15 19:39:59 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/08 19:50:03 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_cmd	*ft_new_cmd(t_free **ptr, void *content)
+int	ft_getlen(char *str, int *i)
 {
-	t_cmd	*node;
+	int	len;
 
-	node = ft_malloc(ptr, sizeof(t_cmd));
-	if (!node)
-		return (NULL);
-	node->cmd = content;
-	node->input = 0;
-	node->output = 1;
-	node->next = NULL;
-	return (node);
-}
-
-void	ft_add_cmd(t_cmd **lst, t_cmd *new)
-{
-	t_cmd	*ptr;
-
-	ptr = *lst;
-	if (!ptr)
+	len = 0;
+	while (str[*i] && str[*i] != ' ')
 	{
-		*lst = new;
-		return ;
+		(*i)++;
+		len++;
 	}
-	while (ptr->next != NULL)
-		ptr = ptr->next;
-	ptr->next = new;
+	return (len);
 }
 
-int	ft_count_pipe(t_token	*token)
+char	*ft_ret_cmd(t_token *token, t_free **ptr, int *i)
 {
-	int	p;
+	char	*str;
 
-	p = 0;
-	while (token)
+	if (token->state == DOLLAR_SIGN)
 	{
-		if (token->type == PIPE)
-			p++;
-		token = token->next;
+		while (token->data[*i] && token->data[*i] == ' ')
+			i++;
+		str = ft_substr(token->data, *i, ft_getlen(token->data, i));
+		ft_add_to_free (ptr, ft_new_node(str));
+		return (str);
 	}
-	return (p);
+	else
+		return (token->data);
 }
 
-char	*ft_get_cmd(t_token	*token)
+char	*ft_get_cmd(t_token	*token, t_free **ptr)
 {
+	int	i;
+
+	i = 0;
 	while (token && token->type != PIPE)
 	{
-		if (token->data[0] == '>' || token->data[0] == '<')
+		if (token->data && (token->data[0] == '>' || token->data[0] == '<'))
 		{
 			token = token->next;
 			if (token->type == WHITE_SPACE)
@@ -70,21 +59,42 @@ char	*ft_get_cmd(t_token	*token)
 				break ;
 			continue ;
 		}
-		if (token->type == WORD && token->data[0] != '\0')
-			return (token->data);
+		if (token->data && token->type == WORD && token->data[0] != '\0')
+			return (ft_ret_cmd(token, ptr, &i));
 		token = token->next;
 	}
 	return ("(null)");
 }
 
-int	ft_len(t_token *token)
+void	ft_return_len(t_token *token, t_free **newptr, int *len)
+{
+	char	**tmp;
+	int		i;
+
+	i = 0;
+	if (token->state == DOLLAR_SIGN)
+	{
+		tmp = ft_split(token->data, ' ');
+		ft_add_to_free(newptr, ft_new_node(tmp));
+		while (tmp[i])
+		{
+			ft_add_to_free(newptr, ft_new_node(tmp[i]));
+			i++;
+			(*len)++;
+		}
+	}
+	else
+		(*len)++;
+}
+
+int	ft_len(t_token *token, t_free **newptr)
 {
 	int	len;
 
 	len = 0;
 	while (token && token->type != PIPE)
 	{
-		if (token->data[0] == '>' || token->data[0] == '<')
+		if (token->data && (token->data[0] == '>' || token->data[0] == '<'))
 		{
 			token = token->next;
 			if (token->type == WHITE_SPACE)
@@ -95,8 +105,8 @@ int	ft_len(t_token *token)
 				break ;
 			continue ;
 		}
-		if (token->type == WORD)
-			len++;
+		if (token->data && token->type == WORD)
+			ft_return_len(token, newptr, &len);
 		token = token->next;
 	}
 	return (len);

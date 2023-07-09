@@ -1,40 +1,34 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_check_path.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/10 21:34:53 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/09 11:40:10 by ylachhab         ###   ########.fr       */
+/*   Created: 2023/07/09 16:28:56 by ylachhab          #+#    #+#             */
+/*   Updated: 2023/07/09 18:37:29 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-int	ft_atoi(const char *str)
+char	**ft_split_path(t_expand *expand, t_free **ptr)
 {
-	int			i;
-	int			sign;
-	long		result;
+	char	*path;
+	char	**split;
 
-	i = 0;
-	sign = 1;
-	result = 0;
-	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
-		i++;
-	if (str[i] == '-')
+	path = ft_search_val("PATH", expand);
+	if (!path)
 	{
-			sign = -1;
-			i++;
+		path = ft_strdup("/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.");
+		ft_add_to_free(ptr, ft_new_node(path));
 	}
-	else if (str[i] == '+')
-				i++;
-	while (str[i] != '\0' && (str[i] >= '0' && str[i] <= '9'))
+	split = ft_split(path, ':');
+	int i = 0;
+	while (split[i])
 	{
-		result += str[i] - 48;
-		result *= 10;
+		printf("%s\n", split[i]);
 		i++;
 	}
-	return (result * sign);
+	return (split);
 }
