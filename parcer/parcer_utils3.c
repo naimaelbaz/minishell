@@ -6,11 +6,39 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 11:43:58 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/24 18:41:21 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/08 11:23:18 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+int	ft_ambiguous(t_token **tmp, t_cmd **new)
+{
+	if (!(*tmp)->data && (*tmp)->state == DOLLAR_SIGN)
+	{
+		(*new)->output = -1;
+		ft_putstr_fd("minishell: ambiguous redirect\n", 2);
+		return (1);
+	}
+	return (0);
+}
+
+int	ft_is_pipe(t_token **tmp, t_cmd **new, int	*p)
+{
+	if ((*tmp)->data[0] == '|')
+	{
+		(*p)--;
+		(*tmp) = (*tmp)->next;
+		if ((*tmp)->type == WHITE_SPACE)
+			(*tmp) = (*tmp)->next;
+		if (ft_ambiguous(tmp, new))
+			return (1);
+		(*new)->output = open((*tmp)->data, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	}
+	else
+		(*new)->output = open((*tmp)->data, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+	return (0);
+}
 
 void	ft_put_infile(t_token **tmp, t_cmd **new, t_expand *expand)
 {

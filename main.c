@@ -6,11 +6,13 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:44:04 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/06/24 19:23:40 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/09 13:22:53 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+int exit_global = 0;
 
 void	pop()
 {
@@ -68,7 +70,7 @@ int	main(int ac, char **av, char **env)
 		token = NULL;
 		ptr = NULL;
 		cmd = NULL;
-		input_line = readline("\e[38;5;010mminishell$ \e[0;00m");
+		input_line = readline("minishell$ ");
 		if (!input_line)
 			exit(0);
 		if (ft_strlen(input_line))

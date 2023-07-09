@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 11:21:08 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/24 11:21:25 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/08 10:26:30 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,17 @@ void	ft_pwd(int i)
 		printf("%s\n", cwd);
 }
 
-void	ft_norme(char *str, int *k)
+int	ft_norme(char *str, int *k, int *j, int *nb)
 {
 	while (str[*k] == 'n')
 		(*k)++;
+	if (str[*k] == '\0')
+	{
+		*nb = *j + 1;
+		return (0);
+	}
+	else
+		return (*nb);
 }
 
 int	ft_search(char **str)
@@ -62,9 +69,8 @@ int	ft_search(char **str)
 			if (str[j][k] == '-' && str[j][k + 1] == 'n')
 			{
 				k++;
-				ft_norme(str[j], &k);
-				if (str[j][k] == '\0')
-					nb = j + 1;
+				if (!ft_norme(str[j], &k, &j, &nb))
+					break ;
 				else
 					return (nb);
 			}

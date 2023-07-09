@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 19:39:26 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/24 11:46:36 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/08 11:23:09 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,14 +30,14 @@ void	ft_red_app_out(t_token **tmp, t_cmd **new, char **f)
 	if (!(*tmp)->data && (*tmp)->state == DOLLAR_SIGN)
 	{
 		(*new)->output = -1;
-		ft_putstr_fd(": ambiguous redirect\n", 2);
+		ft_putstr_fd("minishell: ambiguous redirect\n", 2);
 		return ;
 	}
 	(*new)->output = open((*tmp)->data, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	(*new)->output == -1 && ((*f) = (*tmp)->data);
 }
 
-void	ft_output_red(t_token **tmp, t_cmd **new, char **f)
+void	ft_output_red(t_token **tmp, t_cmd **new, char **f, int *p)
 {
 	int	j;
 
@@ -48,13 +48,10 @@ void	ft_output_red(t_token **tmp, t_cmd **new, char **f)
 		(*tmp) = (*tmp)->next;
 		if ((*tmp)->type == WHITE_SPACE)
 			(*tmp) = (*tmp)->next;
-		if (!(*tmp)->data && (*tmp)->state == DOLLAR_SIGN)
-		{
-			(*new)->output = -1;
-			ft_putstr_fd(": ambiguous redirect\n", 2);
+		if (ft_ambiguous(tmp, new))
 			return ;
-		}
-		(*new)->output = open((*tmp)->data, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		if (ft_is_pipe(tmp, new, p))
+			return ;
 		(*new)->output == -1 && ((*f) = (*tmp)->data);
 		j = 1;
 	}
@@ -66,7 +63,7 @@ void	ft_output_red(t_token **tmp, t_cmd **new, char **f)
 	}
 }
 
-void	ft_open_files(t_token **tmp, t_cmd **new, t_expand *expand)
+void	ft_open_files(t_token **tmp, t_cmd **new, t_expand *expand, int *p)
 {
 	char	*f;
 
@@ -74,7 +71,7 @@ void	ft_open_files(t_token **tmp, t_cmd **new, t_expand *expand)
 	while ((*tmp) && (*tmp)->type != PIPE)
 	{
 		ft_input_red(tmp, new, expand, &f);
-		ft_output_red(tmp, new, &f);
+		ft_output_red(tmp, new, &f, p);
 		(*tmp) = (*tmp)->next;
 	}
 	ft_no_file(&f);
