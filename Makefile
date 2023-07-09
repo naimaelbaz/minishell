@@ -6,7 +6,7 @@
 #    By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/30 18:39:13 by nel-baz           #+#    #+#              #
-#    Updated: 2023/07/09 15:57:14 by ylachhab         ###   ########.fr        #
+#    Updated: 2023/07/09 17:02:48 by ylachhab         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,7 +40,8 @@ SRCS =	main.c \
 		builtins/unset.c \
 		builtins/cd.c \
 		builtins/cd_utils.c \
-		builtins/exit.c
+		builtins/exit.c \
+		execution/ft_check_path.c
 
 
 OBJS = $(SRCS:.c=.o)

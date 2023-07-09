@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:44:30 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/07/09 13:04:42 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/09 17:03:12 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -221,5 +221,7 @@ char		*ft_search_val(char *key, t_expand	*expand);
 void		ft_set_val(char *key, char *value, t_expand **expand);
 
 void	ft_exit(char **args, t_free **ptr);
+
+char	**ft_split_path(t_expand *expand, t_free **ptr);
 
 #endif
