@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/09 16:28:56 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/13 08:30:41 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/13 09:33:03 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,20 +40,12 @@ void	ft_free_split(char **split)
 	split = NULL;
 }
 
-void	ft_dup_file(t_cmd *cmd)
+void	ft_dup_file(t_cmd *cmd, t_cmd *h)
 {
 	if (cmd->output != 1)
 		dup2(cmd->output, 1);
 	if (cmd->input != 0)
 		dup2(cmd->input, 0);
-}
-
-void	 to_be_executed(t_cmd *cmd, t_free **ptr, char **split,
-	t_expand **expand, t_cmd *h)
-{
-	char	*path;
-
-	ft_dup_file(cmd);
 	while (h)
 	{
 		if (h->output != 1)
@@ -62,6 +54,13 @@ void	 to_be_executed(t_cmd *cmd, t_free **ptr, char **split,
 			close(h->input);
 		h = h->next;
 	}
+}
+
+void	to_be_executed(t_cmd *cmd, t_free **ptr, t_expand **expand, t_cmd *h)
+{
+	char	*path;
+
+	ft_dup_file(cmd, h);
 	if (ft_is_absolute_path(cmd->cmd))
 	{
 		if (ft_strcmp(cmd->cmd, ".") && ft_strcmp(cmd->cmd, "..")
@@ -75,9 +74,9 @@ void	 to_be_executed(t_cmd *cmd, t_free **ptr, char **split,
 	}
 	else
 	{
-		path = ft_found_path(split, cmd->cmd, ptr);
-		if (split)
-			ft_free_split(split);
+		path = ft_found_path(g_global.split, cmd->cmd, ptr);
+		if (g_global.split)
+			ft_free_split(g_global.split);
 		if (!path)
 			ft_cmd_not_found(cmd->cmd);
 		execve(path, cmd->arg, myenv(*expand, ptr));

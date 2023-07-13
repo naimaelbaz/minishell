@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 11:21:17 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/13 08:55:29 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/13 09:41:34 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,30 +22,17 @@ void	ft_env(t_expand *expand, int i, char **arg)
 		g_global.exit_global = 127;
 		return ;
 	}
-	while (expand)
+	while (expand && expand->value)
 	{
-		if (i != 1 && expand->value)
+		if (g_global.path && !ft_strcmp(expand->key, "PATH"))
 		{
-			if (g_global.path && !ft_strcmp(expand->key, "PATH"))
-			{
-				expand = expand->next;
-				continue ;
-			}
-			str = ft_join(expand->key, "=");
-			str = ft_strjoin(str, expand->value);
-			ft_putstr_fd(str, i);
-			ft_putstr_fd("\n", i);
-			free (str);
+			expand = expand->next;
+			continue ;
 		}
-		else if (i == 1 && expand->value)
-		{
-			if (g_global.path && !ft_strcmp(expand->key, "PATH"))
-			{
-				expand = expand->next;
-				continue ;
-			}
-			printf("%s=%s\n", expand->key, expand->value);
-		}
+		str = ft_join(expand->key, "=");
+		str = ft_strjoin(str, expand->value);
+		ft_putendl_fd(str, i);
+		free (str);
 		if (!expand->next)
 			break ;
 		expand = expand->next;
@@ -102,6 +89,7 @@ void	ft_wait_process(t_cmd *h)
 		(h->output != 1) && close(h->output);
 		h = h->next;
 	}
+	ft_unlink_heredoc();
 	while (waitpid(-1, &status, 0) != -1)
 		;
 	if (status && WIFEXITED(status))
@@ -111,7 +99,6 @@ void	ft_wait_process(t_cmd *h)
 void	ft_execution(t_cmd *cmd, t_expand **expand, t_free **new_ptr,
 		t_free **ptr)
 {
-	char	**split;
 	t_cmd	*h;
 	pid_t	pid;
 
@@ -125,8 +112,8 @@ void	ft_execution(t_cmd *cmd, t_expand **expand, t_free **new_ptr,
 			pid = fork();
 			if (pid == 0)
 			{
-				split = ft_split_path(*expand);
-				to_be_executed(cmd, ptr, split, expand, h);
+				g_global.split = ft_split_path(*expand);
+				to_be_executed(cmd, ptr, expand, h);
 			}
 			if (pid < 0)
 			{

@@ -6,7 +6,7 @@
 #    By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/30 18:39:13 by nel-baz           #+#    #+#              #
-#    Updated: 2023/07/12 18:08:40 by ylachhab         ###   ########.fr        #
+#    Updated: 2023/07/13 10:14:06 by ylachhab         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell
 
 CC = cc -g
 
-FLAGS = -Wall -Werror -Wextra -g -fsanitize=address
+FLAGS = -Wall -Werror -Wextra #-g -fsanitize=address
 
 SRCS =	main.c \
 		syntax_error/func_utils.c \
@@ -48,7 +48,7 @@ SRCS =	main.c \
 
 OBJS = $(SRCS:.c=.o)
 
-%.o: %.c minishell.h libft/libft.h
+%.o: %.c minishell.h
 	$(CC) $(FLAGS) -c $< -o $@
 
 all : libft $(NAME)

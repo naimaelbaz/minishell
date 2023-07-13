@@ -6,11 +6,24 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 17:21:25 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/11 15:00:17 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/13 10:03:17 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	ft_delete_empty_str(t_token **token)
+{
+	t_token	*tmp ;
+
+	tmp = *token;
+	while (tmp)
+	{
+		if (tmp->data[0] == '\0' && tmp->state == DOLLAR_SIGN)
+			tmp->data = NULL;
+		tmp = tmp->next;
+	}
+}
 
 void	ft_exit_expand(char **head, t_free **ptr)
 {

@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:42:49 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/12 17:06:09 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/13 09:35:04 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,7 @@ void	ft_export(t_expand *expand, int i, t_free **ptr)
 			str = ft_strjoin(str, tmp->value);
 			str = ft_strjoin(str, "\"");
 		}
-		ft_putstr_fd(str, i);
-		ft_putstr_fd("\n", i);
+		ft_putendl_fd(str, i);
 		free (str);
 		tmp = tmp->next;
 	}

@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 10:07:54 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/24 11:31:53 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/13 09:29:25 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,5 +104,15 @@ void	ft_delete(t_token **token, t_free **ptr)
 			ft_add_to_free(ptr, ft_new_node(head->data));
 		}
 		head = head->next;
+	}
+}
+
+void	ft_unlink_heredoc(void)
+{
+	if (g_global.name_hedoc)
+	{
+		unlink(g_global.name_hedoc);
+		free (g_global.name_hedoc);
+		g_global.name_hedoc = NULL;
 	}
 }

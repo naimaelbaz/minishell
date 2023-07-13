@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 11:21:08 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/13 08:56:39 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/13 09:37:16 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ t_expand	*ft_empty_env(t_free **ptr)
 	ft_exp_add_back(&expand, ft_exp_new(str, ptr));
 	ft_exp_add_back(&expand, ft_exp_new("SHLVL=1", ptr));
 	ft_exp_add_back(&expand, ft_exp_new("_=/usr/bin/env", ptr));
-	ft_exp_add_back(&expand, ft_exp_new("PATH=/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.", ptr));
+	ft_exp_add_back(&expand, ft_exp_new("PATH=/usr/gnu/bin:/usr/local/bin:"
+			"/bin:/usr/bin:.", ptr));
 	return (expand);
 }
 

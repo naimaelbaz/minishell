@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:44:04 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/07/13 09:00:43 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/13 10:05:34 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,33 +17,6 @@ t_global	g_global = {0};
 void	pop()
 {
 	system("leaks minishell");
-}
-
-int	ft_empty_arg(char **arg)
-{
-	int	i;
-
-	i = 1;
-	while (arg[i])
-	{
-		if (arg[i][0] != '\0')
-			return (1);
-		i++;
-	}
-	return (0);
-}
-
-void	ft_delete_empty_str(t_token **token)
-{
-	t_token	*tmp ;
-
-	tmp = *token;
-	while (tmp)
-	{
-		if (tmp->data[0] == '\0' && tmp->state == DOLLAR_SIGN)
-			tmp->data = NULL;
-		tmp = tmp->next;
-	}
 }
 
 int	ft_expandsize(t_expand *lst)
@@ -82,67 +55,72 @@ char	**myenv(t_expand *expand, t_free **ptr)
 	return (tmp);
 }
 
-int	main(int ac, char **av, char **env)
+void	ft_functions(t_main	*main, char *input_line)
 {
-	char		*input_line;
-	t_token		*token;
-	t_free		*ptr;
-	t_free		*new_ptr;
-	t_expand	*expand;
-	t_cmd		*cmd;
+	if (ft_check_syntax_error(input_line))
+	{
+		ft_lexing(input_line, &main->token, &main->ptr);
+		ft_expanding(&main->token, main->expand, &main->ptr);
+		ft_delete(&main->token, &main->ptr);
+		ft_join_string(&main->token, &main->ptr);
+		ft_delete_empty_str(&main->token);
+		ft_parcer(main->token, &main->cmd, &main->ptr, main->expand);
+		ft_open_pipe(&main->cmd);
+		ft_execution(main->cmd, &main->expand, &main->new_ptr, &main->ptr);
+		// while (main->token)
+		// {
+		// 	printf("`%s`\t%d\t%d\n", main->token->data, main->token->type, main->token->state);
+		// 	main->token = main->token->next;
+		// }
+	}
+	ft_free(&main->ptr);
+	free(input_line);
+}
 
-	// atexit(pop);
-	(void)av;
-	if (ac != 1)
-		return (printf("Error\n"), 1);
-	expand = NULL;
-	new_ptr = NULL;
+void	ft_put_env(t_main *main, char **env)
+{
 	if (env[0] == NULL)
 	{
 		g_global.path = 1;
-		expand = ft_empty_env(&new_ptr);
+		main->expand = ft_empty_env(&main->new_ptr);
 	}
 	else
-		expand = ft_get_env(&new_ptr, env);
-	g_global.shlvl = ft_atoi(ft_search_val("SHLVL", expand));
+		main->expand = ft_get_env(&main->new_ptr, env);
+	g_global.shlvl = ft_atoi(ft_search_val("SHLVL", main->expand));
 	if (g_global.shlvl >= 1000)
 		g_global.shlvl = 0;
-	ft_set_val("SHLVL", ft_itoa(g_global.shlvl + 1), &expand);
+	ft_set_val("SHLVL", ft_itoa(g_global.shlvl + 1), &main->expand);
+}
+
+int	main(int ac, char **av, char **env)
+{
+	char		*input_line;
+	t_main		main;
+
+	atexit(pop);
+	(void)av;
+	if (ac != 1)
+		return (printf("Error\n"), 1);
+	main.expand = NULL;
+	main.new_ptr = NULL;
+	ft_put_env(&main, env);
 	while (1)
 	{
-		token = NULL;
-		ptr = NULL;
-		cmd = NULL;
+		main.token = NULL;
+		main.ptr = NULL;
+		main.cmd = NULL;
 		input_line = readline("minishell$ ");
 		if (!input_line)
 			exit(0);
 		if (ft_strlen(input_line))
 			add_history(input_line);
-		if (ft_check_syntax_error(input_line))
-		{
-			ft_lexing(input_line, &token, &ptr);
-			ft_expanding(&token, expand, &ptr);
-			ft_delete(&token, &ptr);
-			ft_join_string(&token, &ptr);
-			ft_delete_empty_str(&token);
-			ft_parcer(token, &cmd, &ptr, expand);
-			ft_open_pipe(&cmd);
-			ft_execution(cmd, &expand, &new_ptr, &ptr);
-			// while (token)
-			// {
-			// 	printf("`%s`\t%d\t%d\n", token->data, token->type, token->state);
-			// 	token = token->next;
-			// }
-			// if (input_line[0] == ';')
-			// {
-			// 	ft_free(&ptr);
-			// 	exit(0);
-			// }
-		}
-		ft_free(&ptr);
-		free(input_line);
+		ft_functions(&main, input_line);
+		// if (input_line[0] == ';')
+		// {
+		// 	ft_free(&main.ptr);
+		// 	exit(0);
+		// }
 	}
-	ft_free(&new_ptr);
+	ft_free(&main.new_ptr);
 	return (0);
 }
-

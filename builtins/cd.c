@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 09:32:07 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/12 15:51:21 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/13 09:37:47 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,11 @@ t_expand	*ft_cd_whith_arg(char **arg, t_expand *expand, t_free **new_ptr)
 	pwd = ft_search_val("PWD", expand);
 	if (chdir(arg[1]) == 0)
 	{
-		if(getcwd(cwd, sizeof(cwd)) == NULL)
+		if (getcwd(cwd, sizeof(cwd)) == NULL)
 		{
 			ft_putstr_fd("cd: error retrieving current directory:"
-			"getcwd: cannot access parent directories: No such"
-			"file or directory\n", 2);
+				"getcwd: cannot access parent directories: No such"
+				"file or directory\n", 2);
 			return (NULL);
 		}
 		str = ft_strdup(cwd);

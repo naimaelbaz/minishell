@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 11:43:58 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/13 08:27:28 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/13 09:29:17 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,22 +85,21 @@ void	ft_red_in(t_token **tmp, t_cmd **new, char **f)
 
 void	ft_input_red(t_token **tmp, t_cmd **new, t_expand *expand, char **f)
 {
-	char	*str;
 	int		i;
 
 	i = 0;
 	if ((*tmp) && (*tmp)->type == HERE_DOC)
 	{
 		i == 1 && close((*new)->input);
+		ft_unlink_heredoc();
 		(*tmp) = (*tmp)->next;
 		if ((*tmp)->type == WHITE_SPACE)
 			(*tmp) = (*tmp)->next;
-		str = check_existfile();
-		(*new)->input = open(str, O_CREAT | O_RDWR, 0644);
+		g_global.name_hedoc = check_existfile();
+		(*new)->input = open(g_global.name_hedoc, O_CREAT | O_RDWR, 0644);
 		ft_put_infile(tmp, new, expand);
 		close((*new)->input);
-		(*new)->input = open(str, O_CREAT | O_RDWR, 0644);
-		free(str);//	unlike
+		(*new)->input = open(g_global.name_hedoc, O_CREAT | O_RDWR, 0644);
 		i = 1;
 	}
 	if ((*tmp) && (*tmp)->type == RED_IN && !(*f))

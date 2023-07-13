@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:44:30 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/07/13 09:01:34 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/13 10:05:44 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <fcntl.h>
 # include <sys/stat.h>
 # include <limits.h>
-#include <errno.h>
+# include <errno.h>
 
 # include "./libft/libft.h"
 
@@ -30,9 +30,11 @@
 
 typedef struct s_global
 {
-	int	exit_global;
-	int	shlvl;
-	int	path;
+	int		exit_global;
+	int		shlvl;
+	int		path;
+	char	**split;
+	char	*name_hedoc;
 }	t_global;
 
 extern t_global	g_global;
@@ -119,6 +121,15 @@ typedef struct s_export
 	char	*val;
 }	t_export;
 
+typedef struct s_main
+{
+	t_token		*token;
+	t_free		*ptr;
+	t_free		*new_ptr;
+	t_expand	*expand;
+	t_cmd		*cmd;
+}	t_main;
+
 // syntax_error_functions in folder syntax_error
 
 int			ft_check_redirect_input(char *input);
@@ -203,12 +214,14 @@ void		ft_input_red(t_token **tmp, t_cmd **new,
 				t_expand *expand, char **f);
 int			ft_ambiguous(t_token **tmp, t_cmd **new);
 int			ft_is_pipe(t_token **tmp, t_cmd **new, int	*p);
+void		ft_unlink_heredoc(void);
 
 // built in folder builtins
 
 void		ft_execution(t_cmd *cmd, t_expand **expand, t_free **new_ptr,
 				t_free **ptr);
 void		ft_env(t_expand *expand, int i, char **arg);
+void		ft_delete_empty_str(t_token **token);
 
 void		ft_export(t_expand *expand, int i, t_free **ptr);
 t_expand	*ft_add_export(t_expand *expand, char **arg, t_free **ptr);
@@ -235,8 +248,8 @@ void		ft_printf_error(char *arg);
 void		ft_exit(char **args);
 
 char		**ft_split_path(t_expand *expand);
-void	 to_be_executed(t_cmd *cmd, t_free **ptr, char **split,
-	t_expand **expand, t_cmd *h);
+void		to_be_executed(t_cmd *cmd, t_free **ptr,
+				t_expand **expand, t_cmd *h);
 int			ft_check_path(char *join);
 char		*ft_found_path(char **split, char *cmd, t_free **ptr);
 char		**myenv(t_expand *expand, t_free **ptr);
