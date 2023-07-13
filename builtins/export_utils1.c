@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 09:13:16 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/24 13:13:14 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/11 15:18:31 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,6 +58,13 @@ void	ft_get_key2(char *arg, t_export *export, t_free **ptr)
 	}
 }
 
+void	ft_init(t_export *export)
+{
+	export->plus = 0;
+	export->nb = 0;
+	export->j = 0;
+}
+
 t_expand	*ft_add_export(t_expand *expand, char **arg, t_free **ptr)
 {
 	t_export	export;
@@ -65,23 +72,24 @@ t_expand	*ft_add_export(t_expand *expand, char **arg, t_free **ptr)
 	export.i = 1;
 	while (arg[export.i])
 	{
-		export.plus = 0;
-		export.nb = 0;
+		ft_init(&export);
 		if (!ft_isalpha(arg[export.i][0]) && arg[export.i][0] != '_')
 		{
 			ft_print_error(arg[export.i]);
 			export.i++;
 			continue ;
 		}
-		export.j = 0;
 		ft_get_key2(arg[export.i], &export, ptr);
 		if (ft_check(arg[export.i], &export, ptr))
-			break ;
+		{
+			export.i++;
+			continue ;
+		}
 		if (!ft_check_arg(export.key, export.val, &expand, export.plus)
 			&& ft_check_syntax(export.key))
 			ft_exp_add_back(&expand,
 				ft_export_new(export.key, export.val, ptr));
 		export.i++;
 	}
-	return (expand);
+	return ((export.nb && (g_global.exit_global = 0)), expand);
 }

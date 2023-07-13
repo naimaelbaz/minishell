@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 11:21:08 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/08 10:26:30 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/13 08:56:39 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,14 @@ t_expand	*ft_empty_env(t_free **ptr)
 	char		*str;
 	char		cwd[PATH_MAX];
 
-	getcwd(cwd, sizeof(cwd));
 	expand = NULL;
+	getcwd(cwd, sizeof(cwd));
 	str = ft_join("PWD=", cwd);
+	ft_add_to_free(ptr, ft_new_node(str));
 	ft_exp_add_back(&expand, ft_exp_new(str, ptr));
 	ft_exp_add_back(&expand, ft_exp_new("SHLVL=1", ptr));
+	ft_exp_add_back(&expand, ft_exp_new("_=/usr/bin/env", ptr));
+	ft_exp_add_back(&expand, ft_exp_new("PATH=/usr/gnu/bin:/usr/local/bin:/bin:/usr/bin:.", ptr));
 	return (expand);
 }
 
@@ -38,6 +41,7 @@ void	ft_pwd(int i)
 	}
 	else
 		printf("%s\n", cwd);
+	g_global.exit_global = 0;
 }
 
 int	ft_norme(char *str, int *k, int *j, int *nb)
@@ -99,8 +103,7 @@ void	ft_echo(int i, char **arg)
 		else
 		{
 			printf("%s", arg[nb]);
-			if (arg[nb + 1])
-				printf("%s", " ");
+			arg[nb + 1] && printf("%s", " ");
 		}
 		nb++;
 	}
@@ -108,4 +111,5 @@ void	ft_echo(int i, char **arg)
 		printf("\n");
 	else if (n == 1 && i != 1)
 		ft_putstr_fd("\n", i);
+	g_global.exit_global = 0;
 }

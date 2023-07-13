@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 09:32:07 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/08 11:45:38 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/12 15:51:21 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,14 @@ t_expand	*ft_cd_whithout_arg(t_expand *expand)
 	char	*home;
 	char	*pwd;
 
+	g_global.exit_global = 0;
 	home = ft_search_val("HOME", expand);
 	pwd = ft_search_val("PWD", expand);
 	if (!home)
+	{
 		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+		g_global.exit_global = 1;
+	}
 	if (chdir(home) == 0)
 	{
 		if (pwd)
@@ -32,6 +36,7 @@ t_expand	*ft_cd_whithout_arg(t_expand *expand)
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(home, 2);
 		ft_putstr_fd(": No such file or directory\n", 2);
+		g_global.exit_global = 1;
 	}
 	return (expand);
 }
@@ -41,6 +46,7 @@ void	ft_printf_error(char *arg)
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(arg, 2);
 	ft_putstr_fd(": No such file or directory\n", 2);
+	g_global.exit_global = 1;
 }
 
 t_expand	*ft_cd_whith_arg(char **arg, t_expand *expand, t_free **new_ptr)
@@ -49,10 +55,17 @@ t_expand	*ft_cd_whith_arg(char **arg, t_expand *expand, t_free **new_ptr)
 	char	*str;
 	char	cwd[PATH_MAX];
 
+	g_global.exit_global = 0;
 	pwd = ft_search_val("PWD", expand);
 	if (chdir(arg[1]) == 0)
 	{
-		getcwd(cwd, sizeof(cwd));
+		if(getcwd(cwd, sizeof(cwd)) == NULL)
+		{
+			ft_putstr_fd("cd: error retrieving current directory:"
+			"getcwd: cannot access parent directories: No such"
+			"file or directory\n", 2);
+			return (NULL);
+		}
 		str = ft_strdup(cwd);
 		ft_add_to_free(new_ptr, ft_new_node(str));
 		ft_set_val("OLDPWD", pwd, &expand);

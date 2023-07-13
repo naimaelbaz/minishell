@@ -22,3 +22,11 @@ lawn "\e[38;5;010mminishell$ \e[0;00m" khaso ythayad
 make file relink libft
 
 check if PATH is execeste
+
+
+minishell$ < file >> file
+minshell: (null): command not found
+
+env -i ./minishell hadchi forbidden
+
+head -n 10

@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 09:10:32 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/24 11:20:48 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/11 14:59:31 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ void	ft_print_error(char *arg)
 	ft_putstr_fd("export: ", 2);
 	ft_putstr_fd(arg, 2);
 	ft_putstr_fd(": not a valid identifier\n", 2);
+	g_global.exit_global = 1;
 }
 
 int	ft_check(char *arg, t_export *export, t_free **ptr)

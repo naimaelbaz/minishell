@@ -6,11 +6,17 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 17:21:25 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/24 14:35:07 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/11 15:00:17 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	ft_exit_expand(char **head, t_free **ptr)
+{
+	*head = ft_itoa(g_global.exit_global);
+	ft_add_to_free(ptr, ft_new_node(*head));
+}
 
 t_expand	*ft_exp_new(char *env, t_free **ptr)
 {

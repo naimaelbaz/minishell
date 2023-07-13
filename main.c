@@ -6,13 +6,13 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:44:04 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/07/09 18:24:58 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/13 09:00:43 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int exit_global = 0;
+t_global	g_global = {0};
 
 void	pop()
 {
@@ -35,7 +35,7 @@ int	ft_empty_arg(char **arg)
 
 void	ft_delete_empty_str(t_token **token)
 {
-	t_token	*tmp;
+	t_token	*tmp ;
 
 	tmp = *token;
 	while (tmp)
@@ -44,6 +44,42 @@ void	ft_delete_empty_str(t_token **token)
 			tmp->data = NULL;
 		tmp = tmp->next;
 	}
+}
+
+int	ft_expandsize(t_expand *lst)
+{
+	t_expand	*ptr;
+	int			count;
+
+	count = 0;
+	if (!lst)
+		return (0);
+	ptr = NULL;
+	ptr = lst;
+	while (ptr != NULL)
+	{
+		ptr = ptr->next;
+		count++;
+	}
+	return (count);
+}
+
+char	**myenv(t_expand *expand, t_free **ptr)
+{
+	char	**tmp;
+	int		i;
+
+	i = 0;
+	tmp = ft_malloc(ptr, sizeof(char *) * (ft_expandsize(expand) + 1));
+	while (expand)
+	{
+		tmp[i] = ft_join(expand->key, "=");
+		tmp[i] = ft_strjoin(tmp[i], expand->value);
+		expand = expand->next;
+		i++;
+	}
+	tmp[i] = NULL;
+	return (tmp);
 }
 
 int	main(int ac, char **av, char **env)
@@ -62,9 +98,16 @@ int	main(int ac, char **av, char **env)
 	expand = NULL;
 	new_ptr = NULL;
 	if (env[0] == NULL)
+	{
+		g_global.path = 1;
 		expand = ft_empty_env(&new_ptr);
-	else if (env)
+	}
+	else
 		expand = ft_get_env(&new_ptr, env);
+	g_global.shlvl = ft_atoi(ft_search_val("SHLVL", expand));
+	if (g_global.shlvl >= 1000)
+		g_global.shlvl = 0;
+	ft_set_val("SHLVL", ft_itoa(g_global.shlvl + 1), &expand);
 	while (1)
 	{
 		token = NULL;
@@ -84,7 +127,7 @@ int	main(int ac, char **av, char **env)
 			ft_delete_empty_str(&token);
 			ft_parcer(token, &cmd, &ptr, expand);
 			ft_open_pipe(&cmd);
-			ft_builtins(cmd, &expand, &new_ptr);
+			ft_execution(cmd, &expand, &new_ptr, &ptr);
 			// while (token)
 			// {
 			// 	printf("`%s`\t%d\t%d\n", token->data, token->type, token->state);
@@ -102,3 +145,4 @@ int	main(int ac, char **av, char **env)
 	ft_free(&new_ptr);
 	return (0);
 }
+

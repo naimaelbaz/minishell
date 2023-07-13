@@ -1,39 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   func_utils2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/10 21:34:53 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/11 11:27:12 by ylachhab         ###   ########.fr       */
+/*   Created: 2023/07/12 18:05:11 by ylachhab          #+#    #+#             */
+/*   Updated: 2023/07/12 18:28:14 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-int	ft_atoi(const char *str)
+int	ft_check_parenthesis(char *input)
 {
-	int			i;
-	int			sign;
-	long		result;
+	int	i;
 
 	i = 0;
-	sign = 1;
-	result = 0;
-	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
-		i++;
-	if (str[i] == '-')
+	while (input[i] != '\0')
 	{
-		sign = -1;
+		i = ft_check_in_quote(input, i);
+		if (input[i] == '(' || input[i] == ')')
+			return (1);
 		i++;
 	}
-	else if (str[i] == '+')
-		i++;
-	while (str[i] != '\0' && (str[i] >= '0' && str[i] <= '9'))
-	{
-		result = result * 10 + str[i] - '0';
-		i++;
-	}
-	return (result * sign);
+	return (0);
+}
+
+int	ft_check_brackets(char *input)
+{
+	if (!ft_strcmp(input, "{") || !ft_strcmp(input, "}"))
+		return (1);
+	return (0);
 }

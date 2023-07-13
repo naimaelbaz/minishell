@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 14:42:49 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/24 16:16:45 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/12 17:06:09 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,11 @@ void	ft_export(t_expand *expand, int i, t_free **ptr)
 	tmp = ft_sort_env(tmp);
 	while (tmp)
 	{
+		if (g_global.path && !ft_strcmp(tmp->key, "PATH"))
+		{
+			tmp = tmp->next;
+			continue ;
+		}
 		str = ft_join("declare -x ", tmp->key);
 		if (tmp->value)
 		{
@@ -94,4 +99,5 @@ void	ft_export(t_expand *expand, int i, t_free **ptr)
 		free (str);
 		tmp = tmp->next;
 	}
+	g_global.exit_global = 0;
 }

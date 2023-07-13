@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 10:02:42 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/08 10:49:02 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/11 15:00:01 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,6 +71,7 @@ t_expand	*ft_unset(char	**arg, t_expand *expand)
 	int		i;
 
 	i = 1;
+	g_global.exit_global = 0;
 	while (arg[i])
 	{
 		if ((!ft_isalpha(arg[i][0]) && arg[i][0] != '_')

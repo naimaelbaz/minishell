@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:44:30 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/07/09 17:03:12 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/13 09:01:34 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,20 @@
 # include <fcntl.h>
 # include <sys/stat.h>
 # include <limits.h>
+#include <errno.h>
 
 # include "./libft/libft.h"
 
 # define HEREDOC "here_doc"
 
-extern int	exit_global;
+typedef struct s_global
+{
+	int	exit_global;
+	int	shlvl;
+	int	path;
+}	t_global;
+
+extern t_global	g_global;
 
 enum e_state
 {
@@ -50,7 +58,6 @@ enum e_type
 	RED_APP_OUT,
 	HERE_DOC,
 };
-
 
 //tokenaizer linked_list
 
@@ -121,6 +128,8 @@ int			ft_pipe_first(char *input);
 int			ft_check_quote_close(char *input);
 int			ft_check_syntax_error(char *input);
 int			ft_check_in_quote(char *input, int i);
+int			ft_check_parenthesis(char *input);
+int			ft_check_brackets(char *input);
 
 // garbadge_collector in folder lexing
 
@@ -158,6 +167,7 @@ t_expand	*ft_get_env(t_free **ptr, char **env);
 void		ft_expanding(t_token **token, t_expand *expand, t_free **ptr);
 char		*ft_split_expand(char *s, t_expand *expand);
 int			ft_is_enum(char c);
+void		ft_exit_expand(char **head, t_free **ptr);
 
 // delete in folder parcer
 
@@ -196,8 +206,9 @@ int			ft_is_pipe(t_token **tmp, t_cmd **new, int	*p);
 
 // built in folder builtins
 
-void		ft_builtins(t_cmd *cmd, t_expand **expand, t_free **new_ptr);
-void		ft_env(t_expand *expand, int i);
+void		ft_execution(t_cmd *cmd, t_expand **expand, t_free **new_ptr,
+				t_free **ptr);
+void		ft_env(t_expand *expand, int i, char **arg);
 
 void		ft_export(t_expand *expand, int i, t_free **ptr);
 t_expand	*ft_add_export(t_expand *expand, char **arg, t_free **ptr);
@@ -219,9 +230,15 @@ t_expand	*ft_unset(char	**arg, t_expand *expand);
 t_expand	*ft_cd(t_expand *expand, char **arg, t_free **ptr);
 char		*ft_search_val(char *key, t_expand	*expand);
 void		ft_set_val(char *key, char *value, t_expand **expand);
+void		ft_printf_error(char *arg);
 
-void	ft_exit(char **args, t_free **ptr);
+void		ft_exit(char **args);
 
-char	**ft_split_path(t_expand *expand, t_free **ptr);
+char		**ft_split_path(t_expand *expand);
+void	 to_be_executed(t_cmd *cmd, t_free **ptr, char **split,
+	t_expand **expand, t_cmd *h);
+int			ft_check_path(char *join);
+char		*ft_found_path(char **split, char *cmd, t_free **ptr);
+char		**myenv(t_expand *expand, t_free **ptr);
 
 #endif
