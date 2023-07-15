@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/11 11:39:41 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/11 14:33:56 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/13 17:19:34 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,10 +48,10 @@ char	*ft_get_cmd(t_token	*token, t_free **ptr)
 	i = 0;
 	while (token && token->type != PIPE)
 	{
-		if (token->data && (token->data[0] == '>' || token->data[0] == '<'))
+		if (token->data && (/*token->data[0] == '>' || token->data[0] == '<' */token->type == RED_IN || token->type == RED_OUT || token->type == RED_APP_OUT || token->type == HERE_DOC))
 		{
 			token = token->next;
-			if (token->type == WHITE_SPACE)
+			if (token && token->type == WHITE_SPACE)
 				token = token->next;
 			if (token->next)
 				token = token->next;
@@ -59,7 +59,7 @@ char	*ft_get_cmd(t_token	*token, t_free **ptr)
 				break ;
 			continue ;
 		}
-		if (token->data && token->type == WORD && token->data[0] != '\0')
+		if (token->data && token->type == WORD)// && token->data[0] != '\0')
 			return (ft_ret_cmd(token, ptr, &i));
 		token = token->next;
 	}
@@ -94,7 +94,7 @@ int	ft_len(t_token *token, t_free **newptr)
 	len = 0;
 	while (token && token->type != PIPE)
 	{
-		if (token->data && (token->data[0] == '>' || token->data[0] == '<'))
+		if (token->data && (/*token->data[0] == '>' || token->data[0] == '<'*/token->type == RED_IN || token->type == RED_OUT || token->type == RED_APP_OUT || token->type == HERE_DOC))
 		{
 			token = token->next;
 			if (token->type == WHITE_SPACE)

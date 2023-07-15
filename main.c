@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:44:04 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/07/13 10:05:34 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/15 10:43:52 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,11 +60,11 @@ void	ft_functions(t_main	*main, char *input_line)
 	if (ft_check_syntax_error(input_line))
 	{
 		ft_lexing(input_line, &main->token, &main->ptr);
-		ft_expanding(&main->token, main->expand, &main->ptr);
+		ft_expanding(&main->token, main->expand, &main->ptr, 0);
 		ft_delete(&main->token, &main->ptr);
 		ft_join_string(&main->token, &main->ptr);
 		ft_delete_empty_str(&main->token);
-		ft_parcer(main->token, &main->cmd, &main->ptr, main->expand);
+		ft_parcer(&main);
 		ft_open_pipe(&main->cmd);
 		ft_execution(main->cmd, &main->expand, &main->new_ptr, &main->ptr);
 		// while (main->token)
@@ -72,6 +72,7 @@ void	ft_functions(t_main	*main, char *input_line)
 		// 	printf("`%s`\t%d\t%d\n", main->token->data, main->token->type, main->token->state);
 		// 	main->token = main->token->next;
 		// }
+		// exit (1);
 	}
 	ft_free(&main->ptr);
 	free(input_line);
@@ -97,7 +98,7 @@ int	main(int ac, char **av, char **env)
 	char		*input_line;
 	t_main		main;
 
-	atexit(pop);
+	// atexit(pop);
 	(void)av;
 	if (ac != 1)
 		return (printf("Error\n"), 1);

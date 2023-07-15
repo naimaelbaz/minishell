@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 19:39:26 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/13 08:28:52 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/14 19:00:48 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,8 +18,7 @@ void	ft_no_file(char **f)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(*f, 2);
-		ft_putstr_fd(": ", 2);
-		ft_putendl_fd(strerror(errno), 2);
+		ft_putendl_fd(": No such file or directory", 2);
 		g_global.exit_global = 1;
 	}
 }
@@ -71,7 +70,7 @@ void	ft_output_red(t_token **tmp, t_cmd **new, char **f, int *p)
 	}
 }
 
-void	ft_open_files(t_token **tmp, t_cmd **new, t_expand *expand, int *p)
+void	ft_open_files(t_token **tmp, t_cmd **new, t_main **main, int *p)
 {
 	char	*f;
 
@@ -79,7 +78,7 @@ void	ft_open_files(t_token **tmp, t_cmd **new, t_expand *expand, int *p)
 	g_global.exit_global = 0;
 	while ((*tmp) && (*tmp)->type != PIPE)
 	{
-		ft_input_red(tmp, new, expand, &f);
+		ft_input_red(tmp, new, main, &f);
 		ft_output_red(tmp, new, &f, p);
 		(*tmp) = (*tmp)->next;
 	}

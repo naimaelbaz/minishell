@@ -5,3 +5,17 @@ git merge branch name
 make file relink libft
 
 head -n 10
+
+
+minshell: LL: command not found
+minishell$ exit ""
+exit
+➜  minishell git:(master) ✗
+
+//////
+fn(){ while True; do leaks minishell; sleep 1; done; } ;fn
+
+
+/////
+cd
+SHLVL

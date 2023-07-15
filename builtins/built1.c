@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 11:21:08 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/13 09:37:16 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/15 09:39:40 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,16 +32,15 @@ t_expand	*ft_empty_env(t_free **ptr)
 
 void	ft_pwd(int i)
 {
-	char	cwd[PATH_MAX];
+	static char	cwd[PATH_MAX];
 
-	getcwd(cwd, sizeof(cwd));
-	if (i != 1)
+	// getcwd(cwd, sizeof(cwd));
+	if (!getcwd(cwd, sizeof(cwd)) && !access(cwd, F_OK | R_OK | X_OK | W_OK))
 	{
-		ft_putstr_fd(cwd, i);
-		ft_putstr_fd("\n", i);
+		ft_putstr_fd("minishell: pwd", 2);
+		return ;
 	}
-	else
-		printf("%s\n", cwd);
+	ft_putendl_fd(cwd, i);
 	g_global.exit_global = 0;
 }
 

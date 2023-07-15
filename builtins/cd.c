@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 09:32:07 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/13 09:37:47 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/15 10:01:50 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ t_expand	*ft_cd_whithout_arg(t_expand *expand)
 		ft_putstr_fd("minishell: cd: HOME not set\n", 2);
 		g_global.exit_global = 1;
 	}
-	if (chdir(home) == 0)
+	else if (chdir(home) == 0)
 	{
 		if (pwd)
 			ft_set_val("OLDPWD", pwd, &expand);
@@ -64,7 +64,7 @@ t_expand	*ft_cd_whith_arg(char **arg, t_expand *expand, t_free **new_ptr)
 			ft_putstr_fd("cd: error retrieving current directory:"
 				"getcwd: cannot access parent directories: No such"
 				"file or directory\n", 2);
-			return (NULL);
+			return (expand);
 		}
 		str = ft_strdup(cwd);
 		ft_add_to_free(new_ptr, ft_new_node(str));

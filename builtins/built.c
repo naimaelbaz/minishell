@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 11:21:17 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/13 09:41:34 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/15 10:43:37 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int	ft_check_built(t_cmd *cmd)
 	return (0);
 }
 
-void	ft_wait_process(t_cmd *h)
+void	ft_wait_process(t_cmd *h, pid_t	pid)
 {
 	int		status;
 
@@ -90,9 +90,10 @@ void	ft_wait_process(t_cmd *h)
 		h = h->next;
 	}
 	ft_unlink_heredoc();
-	while (waitpid(-1, &status, 0) != -1)
+	waitpid(pid, &status, 0);
+	while (waitpid(-1, 0, 0) != -1)
 		;
-	if (status && WIFEXITED(status))
+	if (WIFEXITED(status))
 		g_global.exit_global = WEXITSTATUS(status);
 }
 
@@ -112,10 +113,17 @@ void	ft_execution(t_cmd *cmd, t_expand **expand, t_free **new_ptr,
 			pid = fork();
 			if (pid == 0)
 			{
+				if (cmd->cmd[0] == '\0')
+				{
+					ft_putstr_fd("bash: : command not found\n", 2);
+					cmd = cmd->next;
+					continue ;
+				}
 				g_global.split = ft_split_path(*expand);
 				to_be_executed(cmd, ptr, expand, h);
+				// (cmd->input != 0) && close(cmd->input);
 			}
-			if (pid < 0)
+			else if (pid < 0)
 			{
 				perror("");
 				return ;
@@ -131,5 +139,5 @@ void	ft_execution(t_cmd *cmd, t_expand **expand, t_free **new_ptr,
 		// printf("\n");
 		cmd = cmd->next;
 	}
-	ft_wait_process(h);
+	ft_wait_process(h, pid);
 }

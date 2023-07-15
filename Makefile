@@ -6,13 +6,13 @@
 #    By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/30 18:39:13 by nel-baz           #+#    #+#              #
-#    Updated: 2023/07/13 10:14:06 by ylachhab         ###   ########.fr        #
+#    Updated: 2023/07/13 19:38:14 by ylachhab         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME = minishell
 
-CC = cc -g
+CC = cc
 
 FLAGS = -Wall -Werror -Wextra #-g -fsanitize=address
 
@@ -48,25 +48,26 @@ SRCS =	main.c \
 
 OBJS = $(SRCS:.c=.o)
 
-%.o: %.c minishell.h
-	$(CC) $(FLAGS) -c $< -o $@
-
 all : libft $(NAME)
 
 libft :
-	make -s -C libft all bonus
+	make -C ./libft all
+
+%.o: %.c minishell.h
+	$(CC) $(FLAGS) -c $< -o $@
+
 
 $(NAME):  $(OBJS)
-	$(CC) $(FLAGS) libft/libft.a -L/Users/ylachhab/.brew/opt/readline/lib -I/Users/ylachhab/.brew/opt/readline/include  -lreadline $(OBJS) -o $(NAME)
+	$(CC) $(FLAGS) $(OBJS) libft/libft.a -L$(HOME)/.brew/opt/readline/lib -I$(HOME)/.brew/opt/readline/include  -lreadline -o $(NAME)
 
 clean:
 	rm -rf $(OBJS)
-	make -s -C libft clean
+	make  -C libft clean
 
 fclean:	clean
 	rm -rf $(NAME)
-	make -s -C libft fclean
+	make  -C libft fclean
 
 re : fclean all
 
-.PHONY : libft
+.PHONY : libft bonus

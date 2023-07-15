@@ -6,7 +6,7 @@
 #    By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/20 12:06:17 by ylachhab          #+#    #+#              #
-#    Updated: 2023/07/09 11:40:24 by ylachhab         ###   ########.fr        #
+#    Updated: 2023/07/13 10:28:36 by ylachhab         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -81,3 +81,5 @@ fclean: clean
 	$(RM) $(NAME)
 
 re: fclean all
+
+.PHONY : bonus

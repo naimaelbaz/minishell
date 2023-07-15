@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 11:43:58 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/13 09:29:17 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/15 10:50:49 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,15 @@ int	ft_is_pipe(t_token **tmp, t_cmd **new, int	*p)
 	return (0);
 }
 
-void	ft_put_infile(t_token **tmp, t_cmd **new, t_expand *expand)
+void	ft_put_infile(t_token **tmp, t_cmd **new, t_main **main)
 {
-	char	*input;
+	char		*input;
+	t_token		*here;
+	// t_token		*doc;
 
 	while (1)
 	{
+		here = NULL;
 		input = readline("> ");
 		if (!input)
 			break ;
@@ -55,9 +58,14 @@ void	ft_put_infile(t_token **tmp, t_cmd **new, t_expand *expand)
 			free(input);
 			break ;
 		}
-		if ((*tmp)->state != IN_D_QOUTE && (*tmp)->state != IN_QOUTE)
-			ft_expand_in_heredoc(&input, expand);
-		ft_putstr_fd(input, (*new)->input);
+		// if ((*tmp)->state != IN_D_QOUTE && (*tmp)->state != IN_QOUTE)
+			ft_expand_in_heredoc(input, main, &here, *tmp);
+		while (here)
+		{
+			ft_putstr_fd((here)->data, (*new)->input);
+			// printf("`%s`\t%d\t%d\n", (here)->data, (here)->type, (here)->state);
+			(here) = (here)->next;
+		}
 		ft_putstr_fd("\n", (*new)->input);
 		free (input);
 	}
@@ -78,12 +86,13 @@ void	ft_red_in(t_token **tmp, t_cmd **new, char **f)
 	(*new)->input = open((*tmp)->data, O_RDONLY, 0644);
 	if ((*new)->input == -1)
 	{
+		g_global.input = 1;
 		((*f) = (*tmp)->data);
 		g_global.exit_global = 1;
 	}
 }
 
-void	ft_input_red(t_token **tmp, t_cmd **new, t_expand *expand, char **f)
+void	ft_input_red(t_token **tmp, t_cmd **new, t_main **main, char **f)
 {
 	int		i;
 
@@ -97,9 +106,23 @@ void	ft_input_red(t_token **tmp, t_cmd **new, t_expand *expand, char **f)
 			(*tmp) = (*tmp)->next;
 		g_global.name_hedoc = check_existfile();
 		(*new)->input = open(g_global.name_hedoc, O_CREAT | O_RDWR, 0644);
-		ft_put_infile(tmp, new, expand);
+		if ((*new)->input == -1)
+		{
+			g_global.input = 1;
+			((*f) = (*tmp)->data);
+			g_global.exit_global = 1;
+		}
+		ft_put_infile(tmp, new, main);
 		close((*new)->input);
 		(*new)->input = open(g_global.name_hedoc, O_CREAT | O_RDWR, 0644);
+		if ((*new)->input == -1)
+		{
+			g_global.input = 1;
+			((*f) = (*tmp)->data);
+			g_global.exit_global = 1;
+		}
+		if (g_global.input)
+			(*new)->input = -1;
 		i = 1;
 	}
 	if ((*tmp) && (*tmp)->type == RED_IN && !(*f))

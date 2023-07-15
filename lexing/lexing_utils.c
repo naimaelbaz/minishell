@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 10:00:51 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/13 09:08:33 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/14 11:22:21 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	ft_env_variable(t_enum *enu, char **input_line, t_free **ptr,
 		}
 		else
 		{
-			if ((*(*input_line + 1) == D_QOUTE || *(*input_line + 1) == QOUTE))
+			if (((*(*input_line + 1) == D_QOUTE || *(*input_line + 1) == QOUTE)) && !g_global.flag)
 				return ((*input_line)++, 1);
 			len = 2;
 			if (*(*input_line + 1) != ENV_VAR)

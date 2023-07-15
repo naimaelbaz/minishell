@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:50:15 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/13 09:16:09 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/13 15:23:16 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,7 @@ char	**ft_get_arg(t_token *token, t_free **newptr)
 	args = ft_malloc(newptr, (sizeof(char *) * (ft_len(token, newptr) + 1)));
 	while (token && token->type != PIPE)
 	{
-		if (token->data && (token->data[0] == '>' || token->data[0] == '<'))
+		if (token->data && (/*token->data[0] == '>' || token->data[0] == '<'*/token->type == RED_IN || token->type == RED_OUT || token->type == RED_APP_OUT || token->type == HERE_DOC))
 		{
 			token = token->next;
 			if (token->type == WHITE_SPACE)
@@ -81,16 +81,16 @@ char	*check_existfile(void)
 	return (str);
 }
 
-void	ft_expand_here_doc(char **str, t_expand *expand)
-{
-	if (ft_isdigit((*str)[1]))
-	{
-		*str += 2;
-		*str = ft_substr(*str, 0, ft_strlen(*str));
-	}
-	else
-		*str = ft_get_value(*str, expand, 0);
-}
+// void	ft_expand_here_doc(char *str, t_expand *expand)
+// {
+// 	if (ft_isdigit((*str)[1]))
+// 	{
+// 		*str += 2;
+// 		*str = ft_substr(*str, 0, ft_strlen(*str));
+// 	}
+// 	else
+// 		*str = ft_get_value(*str, expand, 0);
+// }
 
 void	ft_open_pipe(t_cmd **cmd)
 {

@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 10:07:54 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/13 09:29:25 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/13 18:34:15 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,18 +42,8 @@ char	*ft_join(char *s1, char *s2)
 
 int	ft_join_check(t_token	*head)
 {
-	if (head->next
-		&& head->next->data[0] != PIPE && head->next->data[0] != RED_IN
-		&& head->next->data[0] != RED_OUT
-		&& ((head->next->data[0] == WHITE_SPACE
-				&& (head->next->state == IN_D_QOUTE
-					|| head->next->state == IN_QOUTE))
-			|| head->next->data[0] != WHITE_SPACE)
-		&& ((head->data[0] == WHITE_SPACE
-				&& (head->state == IN_D_QOUTE || head->state == IN_QOUTE))
-			|| head->data[0] != WHITE_SPACE)
-		&& head->data[0] != PIPE && head->data[0] != RED_IN
-		&& head->data[0] != RED_OUT)
+	if (head->next && (head->type == IN_D_QOUTE || head->type == IN_QOUTE || head->type == WORD)
+		&& (head->next->type == IN_D_QOUTE || head->next->type == IN_QOUTE || head->next->type == WORD))
 		return (1);
 	return (0);
 }

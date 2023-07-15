@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 10:01:01 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/11 14:53:15 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/14 11:12:19 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	ft_isnot_env(char *s, int *i, int start, char **join)
 	return (0);
 }
 
-char	*ft_split_expand(char *s, t_expand *expand)
+char	*ft_split_expand(char *s, t_expand *expand, int flag)
 {
 	int		i;
 	int		start;
@@ -52,7 +52,8 @@ char	*ft_split_expand(char *s, t_expand *expand)
 
 	i = 0;
 	join = NULL;
-	s = ft_strtrim(s, "\"");
+	if (!flag)
+		s = ft_strtrim(s, "\"");
 	while (s[i])
 	{
 		s[i] && s[i] != ENV_VAR && ft_isnot_env(s, &i, start, &join);
@@ -69,7 +70,9 @@ char	*ft_split_expand(char *s, t_expand *expand)
 		}
 	}
 	!join && (join = ft_strdup(""));
-	return (free (s), join);
+	if (!flag)
+		free (s);
+	return (join);
 }
 
 void	ft_dollarsign_inword(char **str, t_expand *expand, t_free **ptr)
@@ -87,7 +90,7 @@ void	ft_dollarsign_inword(char **str, t_expand *expand, t_free **ptr)
 	}
 }
 
-void	ft_expanding(t_token **token, t_expand *expand, t_free **ptr)
+void	ft_expanding(t_token **token, t_expand *expand, t_free **ptr, int flag)
 {
 	t_token	*head;
 
@@ -102,16 +105,16 @@ void	ft_expanding(t_token **token, t_expand *expand, t_free **ptr)
 				head = head->next;
 			continue ;
 		}
-		else if (head->state == IN_D_QOUTE)
+		else if (head->state == IN_D_QOUTE || (head->state == IN_QOUTE && flag == 1))
 		{
-			head->data = ft_split_expand(head->data, expand);
+			head->data = ft_split_expand(head->data, expand, flag);
 			ft_add_to_free(ptr, ft_new_node(head->data));
 		}
 		else if (head->state == DOLLAR_SIGN && head->data[0] == ENV_VAR
 			&& (head->data[1] != '\0' && head->data[1] != '?'))
 			ft_dollarsign_inword(&head->data, expand, ptr);
 		else if (!ft_strcmp(head->data, "$?"))
-			ft_exit_expand (&head->data, ptr);
+			ft_exit_expand(&head->data, ptr);
 		head = head->next;
 	}
 }

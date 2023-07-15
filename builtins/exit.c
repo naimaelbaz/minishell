@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/09 09:12:16 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/11 15:25:44 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/13 17:43:41 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int	ft_atoi_util(char *str)
 	result = 0;
 	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
 		i++;
+	if (str[i] == '\0')
+		ft_put_error(str);
 	ft_check_signed(str[i], &i, &sign);
 	while (str[i] != '\0' && (str[i] >= '0' && str[i] <= '9'))
 	{
