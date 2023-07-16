@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/09 16:28:56 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/14 19:16:28 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/16 17:25:15 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ char	*ft_is_absolute_path(char *cmd)
 
 void	ft_cmd_not_found(char *cmd)
 {
+	// if (a)
 	ft_putstr_fd("minshell: ", 2);
 	ft_putstr_fd(cmd, 2);
 	ft_putstr_fd(": command not found\n", 2);
@@ -77,7 +78,7 @@ void	to_be_executed(t_cmd *cmd, t_free **ptr, t_expand **expand, t_cmd *h)
 			if (g_global.shlvl == 0)
 				ft_exp_add_back(expand, ft_exp_new("SHLVL=0", ptr));
 		}
-		if (access(cmd->cmd, X_OK) == 0)
+		if (access(cmd->cmd, X_OK | W_OK | R_OK | F_OK) == 0)
 		{
 			execve(cmd->cmd, cmd->arg, myenv(*expand, ptr));
 			perror("");

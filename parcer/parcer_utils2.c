@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 19:39:26 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/14 19:00:48 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/16 16:04:40 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,12 +43,9 @@ void	ft_red_app_out(t_token **tmp, t_cmd **new, char **f)
 
 void	ft_output_red(t_token **tmp, t_cmd **new, char **f, int *p)
 {
-	int	j;
-
-	j = 0;
 	if ((*tmp) && (*tmp)->type == RED_OUT && !(*f))
 	{
-		j == 1 && close((*new)->output);
+		(*new)->output != 1 && close((*new)->output);
 		(*tmp) = (*tmp)->next;
 		((*tmp)->type == WHITE_SPACE) && ((*tmp) = (*tmp)->next);
 		if (ft_ambiguous(tmp, new))
@@ -60,17 +57,15 @@ void	ft_output_red(t_token **tmp, t_cmd **new, char **f, int *p)
 			((*f) = (*tmp)->data);
 			g_global.exit_global = 1;
 		}
-		j = 1;
 	}
 	else if ((*tmp) && (*tmp)->type == RED_APP_OUT && !(*f))
 	{
-		j == 1 && close((*new)->output);
+		(*new)->output != 1 && close((*new)->output);
 		ft_red_app_out(tmp, new, f);
-		j = 1;
 	}
 }
 
-void	ft_open_files(t_token **tmp, t_cmd **new, t_main **main, int *p)
+int	ft_open_files(t_token **tmp, t_cmd **new, t_main **main, int *p)
 {
 	char	*f;
 
@@ -78,9 +73,11 @@ void	ft_open_files(t_token **tmp, t_cmd **new, t_main **main, int *p)
 	g_global.exit_global = 0;
 	while ((*tmp) && (*tmp)->type != PIPE)
 	{
-		ft_input_red(tmp, new, main, &f);
+		if (ft_input_red(tmp, new, main, &f))
+			return (1);
 		ft_output_red(tmp, new, &f, p);
 		(*tmp) = (*tmp)->next;
 	}
 	ft_no_file(&f);
+	return (0);
 }

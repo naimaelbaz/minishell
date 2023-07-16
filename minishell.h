@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:44:30 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/07/15 10:28:57 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/16 14:59:38 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,15 @@
 # include <string.h>
 # include <unistd.h>
 # include <stdlib.h>
+# include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <fcntl.h>
 # include <sys/stat.h>
 # include <limits.h>
 # include <errno.h>
+# include <dirent.h>
+# include <termios.h>
 
 # include "./libft/libft.h"
 
@@ -30,6 +33,7 @@
 
 typedef struct s_global
 {
+	int		here_sig;
 	int		path;
 	int		exit_global;
 	int		shlvl;
@@ -191,7 +195,7 @@ void		ft_join_string(t_token **token, t_free **ptr);
 //
 
 char		**ft_get_arg(t_token *token, t_free **newptr);
-void		ft_parcer(t_main **main);
+int			ft_parcer(t_main **main);
 void		ft_open_pipe(t_cmd **cmd);
 char		*ft_join(char *s1, char *s2);
 
@@ -210,9 +214,9 @@ char		*check_existfile(void);
 // void		ft_expand_here_doc(char *str, t_expand *expand);
 void		ft_expand_in_heredoc(char *input, t_main **main, t_token **here, t_token *tmp);
 void		ft_open_pipe(t_cmd **cmd);
-void		ft_open_files(t_token **tmp, t_cmd **new, t_main **main, int *p);
+int		ft_open_files(t_token **tmp, t_cmd **new, t_main **main, int *p);
 void		ft_red_in(t_token **tmp, t_cmd **new, char **f);
-void		ft_input_red(t_token **tmp, t_cmd **new, t_main **main, char **f);
+int			ft_input_red(t_token **tmp, t_cmd **new, t_main **main, char **f);
 int			ft_ambiguous(t_token **tmp, t_cmd **new);
 int			ft_is_pipe(t_token **tmp, t_cmd **new, int	*p);
 void		ft_unlink_heredoc(void);
@@ -254,5 +258,9 @@ void		to_be_executed(t_cmd *cmd, t_free **ptr,
 int			ft_check_path(char *join);
 char		*ft_found_path(char **split, char *cmd, t_free **ptr);
 char		**myenv(t_expand *expand, t_free **ptr);
+
+//
+
+void		ft_handle_sigint(int sig);
 
 #endif

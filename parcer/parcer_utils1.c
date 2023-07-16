@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:50:15 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/13 15:23:16 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/16 16:11:20 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,8 +103,12 @@ void	ft_open_pipe(t_cmd **cmd)
 		pipe(pipefd);
 		if (tmp->output == 1)
 			tmp->output = pipefd[1];
+		else
+			close(pipefd[1]);
 		if (tmp->next->input == 0)
 			tmp->next->input = pipefd[0];
+		else
+			close(pipefd[0]);
 		tmp = tmp->next;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/01 10:15:15 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/13 08:27:04 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/16 17:00:57 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ int	ft_check_redirect_input(char *input)
 			i++;
 			if (input[i] == '<')
 				i++;
+			i = ft_check_in_quote(input, i);
 			while (input[i] && ((input[i] >= 9 && input[i] <= 13)
 					|| input[i] == 32))
 				i++;

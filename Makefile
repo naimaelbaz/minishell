@@ -6,7 +6,7 @@
 #    By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/30 18:39:13 by nel-baz           #+#    #+#              #
-#    Updated: 2023/07/13 19:38:14 by ylachhab         ###   ########.fr        #
+#    Updated: 2023/07/15 13:05:10 by ylachhab         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -54,11 +54,11 @@ libft :
 	make -C ./libft all
 
 %.o: %.c minishell.h
-	$(CC) $(FLAGS) -c $< -o $@
+	$(CC) $(FLAGS) -c -I/Users/ylachhab/.brew/opt/readline/include $< -o $@
 
 
 $(NAME):  $(OBJS)
-	$(CC) $(FLAGS) $(OBJS) libft/libft.a -L$(HOME)/.brew/opt/readline/lib -I$(HOME)/.brew/opt/readline/include  -lreadline -o $(NAME)
+	$(CC) $(FLAGS) $(OBJS) libft/libft.a -L/Users/ylachhab/.brew/opt/readline/lib -I/Users/ylachhab/.brew/opt/readline/include  -lreadline -lreadline -o $(NAME)
 
 clean:
 	rm -rf $(OBJS)

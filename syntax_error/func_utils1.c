@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 12:17:29 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/08 10:58:57 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/16 17:00:14 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	ft_check_in_quote(char *input, int i)
 
 int	ft_red_pipe(char *input, int *i, int *nb)
 {
-	(*i)++;
+	// (*i)++;
 	if (input[*i] == '|')
 	{
 		(*i)++;
@@ -58,6 +58,10 @@ int	ft_check_redirect_output(char *input)
 		i = ft_check_in_quote(input, i);
 		if (input[i] == '>')
 		{
+			i++;
+			if (input[i] == '>')
+				i++;
+			i = ft_check_in_quote(input, i);
 			if (ft_red_pipe(input, &i, &nb))
 				return (1);
 			while (input[i] && ((input[i] >= 9 && input[i] <= 13)

@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 11:43:58 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/15 10:50:49 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/16 17:07:19 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	ft_ambiguous(t_token **tmp, t_cmd **new)
 
 int	ft_is_pipe(t_token **tmp, t_cmd **new, int	*p)
 {
-	if ((*tmp)->data[0] == '|')
+	if ((*tmp)->type == PIPE)
 	{
 		(*p)--;
 		(*tmp) = (*tmp)->next;
@@ -41,34 +41,49 @@ int	ft_is_pipe(t_token **tmp, t_cmd **new, int	*p)
 	return (0);
 }
 
-void	ft_put_infile(t_token **tmp, t_cmd **new, t_main **main)
+void	ft_handle_heredoc(int sig)
+{
+	(void)sig;
+	close(0);
+	g_global.here_sig = 1;
+	g_global.exit_global = 1;
+	rl_replace_line("", 0);
+	rl_on_new_line();
+}
+
+int	ft_put_infile(t_token **tmp, t_cmd **new, t_main **main)
 {
 	char		*input;
 	t_token		*here;
-	// t_token		*doc;
 
+	g_global.here_sig = 0;
+	signal(SIGINT, ft_handle_heredoc);
 	while (1)
 	{
 		here = NULL;
 		input = readline("> ");
 		if (!input)
+		{
+			ft_unlink_heredoc();
+			if (g_global.here_sig)
+				return (1);
 			break ;
+		}
 		if (!ft_strcmp(input, (*tmp)->data))
 		{
 			free(input);
 			break ;
 		}
-		// if ((*tmp)->state != IN_D_QOUTE && (*tmp)->state != IN_QOUTE)
-			ft_expand_in_heredoc(input, main, &here, *tmp);
+		ft_expand_in_heredoc(input, main, &here, *tmp);
 		while (here)
 		{
 			ft_putstr_fd((here)->data, (*new)->input);
-			// printf("`%s`\t%d\t%d\n", (here)->data, (here)->type, (here)->state);
 			(here) = (here)->next;
 		}
 		ft_putstr_fd("\n", (*new)->input);
 		free (input);
 	}
+	return (0);
 }
 
 void	ft_red_in(t_token **tmp, t_cmd **new, char **f)
@@ -92,43 +107,28 @@ void	ft_red_in(t_token **tmp, t_cmd **new, char **f)
 	}
 }
 
-void	ft_input_red(t_token **tmp, t_cmd **new, t_main **main, char **f)
+int	ft_input_red(t_token **tmp, t_cmd **new, t_main **main, char **f)
 {
-	int		i;
-
-	i = 0;
 	if ((*tmp) && (*tmp)->type == HERE_DOC)
 	{
-		i == 1 && close((*new)->input);
+		(*new)->input != 0 && close((*new)->input);
 		ft_unlink_heredoc();
 		(*tmp) = (*tmp)->next;
 		if ((*tmp)->type == WHITE_SPACE)
 			(*tmp) = (*tmp)->next;
 		g_global.name_hedoc = check_existfile();
 		(*new)->input = open(g_global.name_hedoc, O_CREAT | O_RDWR, 0644);
-		if ((*new)->input == -1)
-		{
-			g_global.input = 1;
-			((*f) = (*tmp)->data);
-			g_global.exit_global = 1;
-		}
-		ft_put_infile(tmp, new, main);
+		if (ft_put_infile(tmp, new, main))
+			return (1);
 		close((*new)->input);
 		(*new)->input = open(g_global.name_hedoc, O_CREAT | O_RDWR, 0644);
-		if ((*new)->input == -1)
-		{
-			g_global.input = 1;
-			((*f) = (*tmp)->data);
-			g_global.exit_global = 1;
-		}
 		if (g_global.input)
 			(*new)->input = -1;
-		i = 1;
 	}
 	if ((*tmp) && (*tmp)->type == RED_IN && !(*f))
 	{
-		i == 1 && close((*new)->input);
+		(*new)->input != 0 && close((*new)->input);
 		ft_red_in(tmp, new, f);
-		i = 1;
 	}
+	return (0);
 }

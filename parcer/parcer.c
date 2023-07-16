@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:45:23 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/15 10:29:53 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/16 17:09:20 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,21 +59,13 @@ t_cmd	*ft_new_cmd(t_free **ptr, void *content)
 
 void	ft_expand_in_heredoc(char *input, t_main **main, t_token **here, t_token *tmp)
 {
-	// if ((*input)[0] == '$' && ((*input)[1] != '\0' && (*input)[1] != '?'))
 	g_global.flag = 1;
 	ft_lexing(input, here, &(*main)->ptr);
 	if (tmp->state != IN_D_QOUTE && tmp->state != IN_QOUTE)
 		ft_expanding(here, (*main)->expand, &(*main)->ptr, 1);
-	// while (*here)
-	// {
-	// 	printf("`%s`\t%d\t%d\n", (*here)->data, (*here)->type, (*here)->state);
-	// 	(*here) = (*here)->next;
-	// }
-	// exit (1);
-	// ft_expand_here_doc(input, (*main)->expand);
 }
 
-void	ft_parcer(t_main **main)
+int	ft_parcer(t_main **main)
 {
 	t_cmd	*new;
 	t_token	*tmp;
@@ -90,11 +82,13 @@ void	ft_parcer(t_main **main)
 			new = ft_new_cmd(&(*main)->ptr, ft_get_cmd(tmp, &(*main)->ptr));
 			ft_add_cmd(&(*main)->cmd, new);
 			new->arg = ft_get_arg(tmp, &(*main)->ptr);
-			ft_open_files(&tmp, &new, main, &countp);
+			if (ft_open_files(&tmp, &new, main, &countp))
+				return (1);
 			countp--;
 			if (countp == 0)
 				break ;
 		}
 		tmp = tmp->next;
 	}
+	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 11:21:17 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/15 10:43:37 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/16 15:23:27 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,18 +83,34 @@ void	ft_wait_process(t_cmd *h, pid_t	pid)
 {
 	int		status;
 
+	ft_unlink_heredoc();
 	while (h)
 	{
 		(h->input != 0) && close(h->input);
 		(h->output != 1) && close(h->output);
 		h = h->next;
 	}
-	ft_unlink_heredoc();
 	waitpid(pid, &status, 0);
 	while (waitpid(-1, 0, 0) != -1)
 		;
 	if (WIFEXITED(status))
 		g_global.exit_global = WEXITSTATUS(status);
+	if (WIFSIGNALED(status))
+	{
+		if (WTERMSIG(status) == 3 || WTERMSIG(status) == 2)
+		{
+			g_global.exit_global = 128 + WTERMSIG(status);
+			if (WTERMSIG(status) == 3)
+				printf("Quit: %d\n", WTERMSIG(status));
+			else
+				printf("\n");
+		}
+	}
+}
+
+void	ft_handle_sigquit(int sig)
+{
+	(void)sig;
 }
 
 void	ft_execution(t_cmd *cmd, t_expand **expand, t_free **new_ptr,
@@ -113,15 +129,15 @@ void	ft_execution(t_cmd *cmd, t_expand **expand, t_free **new_ptr,
 			pid = fork();
 			if (pid == 0)
 			{
+				signal(SIGQUIT, ft_handle_sigquit);
 				if (cmd->cmd[0] == '\0')
 				{
-					ft_putstr_fd("bash: : command not found\n", 2);
+					ft_putstr_fd("minishell: : command not found\n", 2);
 					cmd = cmd->next;
-					continue ;
+					exit(127);
 				}
 				g_global.split = ft_split_path(*expand);
 				to_be_executed(cmd, ptr, expand, h);
-				// (cmd->input != 0) && close(cmd->input);
 			}
 			else if (pid < 0)
 			{
