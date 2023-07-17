@@ -15,6 +15,8 @@ exit
 //////
 fn(){ while True; do leaks minishell; sleep 1; done; } ;fn
 
+echo "echo  a | head -n1" |./minishell
+
 
 /////
 cd

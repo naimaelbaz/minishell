@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/09 16:28:56 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/16 17:25:15 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/17 11:08:33 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,16 +75,22 @@ void	to_be_executed(t_cmd *cmd, t_free **ptr, t_expand **expand, t_cmd *h)
 		if (!ft_strcmp(cmd->cmd, "./minishell"))
 		{
 			g_global.shlvl = ft_atoi(ft_search_val("SHLVL", *expand));
-			if (g_global.shlvl == 0)
+			if (g_global.shlvl == 0 && g_global.delete_shlvl)
 				ft_exp_add_back(expand, ft_exp_new("SHLVL=0", ptr));
 		}
-		if (access(cmd->cmd, X_OK | W_OK | R_OK | F_OK) == 0)
+		if (access(cmd->cmd, X_OK | W_OK | R_OK | F_OK) == -1)
 		{
-			execve(cmd->cmd, cmd->arg, myenv(*expand, ptr));
+			ft_putstr_fd("minishell: ", 2);
+			ft_putstr_fd(cmd->cmd, 2);
+			ft_putstr_fd(": ", 2);
 			perror("");
+			if (stat(cmd->cmd, &state) == 0)
+				exit (126);
+			else
+				exit (127);
 		}
-		else
-			ft_cmd_not_found(cmd->cmd);
+		execve(cmd->cmd, cmd->arg, myenv(*expand, ptr));
+		perror("");
 	}
 	else
 	{

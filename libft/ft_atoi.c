@@ -6,11 +6,12 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/10 21:34:53 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/14 13:23:12 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/17 11:08:12 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "../minishell.h"
 
 int	ft_atoi(const char *str)
 {
@@ -22,7 +23,10 @@ int	ft_atoi(const char *str)
 	sign = 1;
 	result = 0;
 	if (!str)
+	{
+		g_global.delete_shlvl = 1;
 		return (0);
+	}
 	while ((str[i] >= 9 && str[i] <= 13) || str[i] == 32)
 		i++;
 	if (str[i] == '-')

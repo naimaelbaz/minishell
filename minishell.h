@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:44:30 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/07/16 14:59:38 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/17 12:03:59 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 
 typedef struct s_global
 {
+	int		delete_shlvl;
 	int		here_sig;
 	int		path;
 	int		exit_global;
@@ -41,6 +42,7 @@ typedef struct s_global
 	int		input;
 	char	**split;
 	char	*name_hedoc;
+	int		hedoc;
 }	t_global;
 
 extern t_global	g_global;
@@ -257,6 +259,7 @@ void		to_be_executed(t_cmd *cmd, t_free **ptr,
 				t_expand **expand, t_cmd *h);
 int			ft_check_path(char *join);
 char		*ft_found_path(char **split, char *cmd, t_free **ptr);
+void		ft_dup_file(t_cmd *cmd, t_cmd *h);
 char		**myenv(t_expand *expand, t_free **ptr);
 
 //

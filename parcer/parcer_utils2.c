@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 19:39:26 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/16 16:04:40 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/17 18:21:59 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,13 @@ void	ft_no_file(char **f)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(*f, 2);
-		ft_putendl_fd(": No such file or directory", 2);
+		ft_putstr_fd(": ", 2);
+		if (access(*f, F_OK) == -1)
+			ft_putstr_fd("No such file or directory\n", 2);
+		else if (access(*f, X_OK | W_OK | R_OK) == -1)
+			ft_putstr_fd("Permission denied\n", 2);
+		else
+			ft_putendl_fd(strerror(errno), 2);
 		g_global.exit_global = 1;
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 11:43:58 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/16 17:07:19 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/17 16:54:28 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,15 +47,17 @@ void	ft_handle_heredoc(int sig)
 	close(0);
 	g_global.here_sig = 1;
 	g_global.exit_global = 1;
-	rl_replace_line("", 0);
-	rl_on_new_line();
+	// rl_replace_line("", 0);
+	// rl_on_new_line();
 }
 
 int	ft_put_infile(t_token **tmp, t_cmd **new, t_main **main)
 {
 	char		*input;
 	t_token		*here;
+	int			fd_in;
 
+	fd_in = dup(0);
 	g_global.here_sig = 0;
 	signal(SIGINT, ft_handle_heredoc);
 	while (1)
@@ -64,9 +66,13 @@ int	ft_put_infile(t_token **tmp, t_cmd **new, t_main **main)
 		input = readline("> ");
 		if (!input)
 		{
-			ft_unlink_heredoc();
 			if (g_global.here_sig)
+			{
+				dup2(fd_in, 0);
+				ft_unlink_heredoc();
+				close(fd_in);
 				return (1);
+			}
 			break ;
 		}
 		if (!ft_strcmp(input, (*tmp)->data))
@@ -83,6 +89,8 @@ int	ft_put_infile(t_token **tmp, t_cmd **new, t_main **main)
 		ft_putstr_fd("\n", (*new)->input);
 		free (input);
 	}
+	dup2(fd_in, 0);
+	close(fd_in);
 	return (0);
 }
 
@@ -118,6 +126,7 @@ int	ft_input_red(t_token **tmp, t_cmd **new, t_main **main, char **f)
 			(*tmp) = (*tmp)->next;
 		g_global.name_hedoc = check_existfile();
 		(*new)->input = open(g_global.name_hedoc, O_CREAT | O_RDWR, 0644);
+		g_global.hedoc = (*new)->input;
 		if (ft_put_infile(tmp, new, main))
 			return (1);
 		close((*new)->input);

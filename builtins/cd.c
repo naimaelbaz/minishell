@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 09:32:07 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/15 10:01:50 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/16 18:43:15 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ t_expand	*ft_cd_whithout_arg(t_expand *expand)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(home, 2);
-		ft_putstr_fd(": No such file or directory\n", 2);
+		ft_putstr_fd(": ", 2);
+		ft_putendl_fd(strerror(errno), 2);
 		g_global.exit_global = 1;
 	}
 	return (expand);
@@ -45,7 +46,8 @@ void	ft_printf_error(char *arg)
 {
 	ft_putstr_fd("minishell: ", 2);
 	ft_putstr_fd(arg, 2);
-	ft_putstr_fd(": No such file or directory\n", 2);
+	ft_putstr_fd(": ", 2);
+	ft_putendl_fd(strerror(errno), 2);
 	g_global.exit_global = 1;
 }
 

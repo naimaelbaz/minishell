@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 10:07:54 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/13 18:34:15 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/17 12:04:43 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,6 +102,7 @@ void	ft_unlink_heredoc(void)
 	if (g_global.name_hedoc)
 	{
 		unlink(g_global.name_hedoc);
+		close(g_global.hedoc);
 		free (g_global.name_hedoc);
 		g_global.name_hedoc = NULL;
 	}

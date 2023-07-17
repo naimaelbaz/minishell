@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 11:21:17 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/16 15:23:27 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/17 17:15:50 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -122,9 +122,10 @@ void	ft_execution(t_cmd *cmd, t_expand **expand, t_free **new_ptr,
 	h = cmd;
 	while (cmd)
 	{
-		if (!ft_check_built(cmd))
+		if (cmd && !ft_check_built(cmd) && !cmd->next && !cmd->prev)
 			ft_builtins(cmd, expand, new_ptr);
-		else if (ft_check_built(cmd))
+		else if (cmd && cmd->input != -1 && cmd->output != -1
+				&& ft_strcmp(cmd->cmd, "(null)"))
 		{
 			pid = fork();
 			if (pid == 0)
@@ -137,7 +138,13 @@ void	ft_execution(t_cmd *cmd, t_expand **expand, t_free **new_ptr,
 					exit(127);
 				}
 				g_global.split = ft_split_path(*expand);
-				to_be_executed(cmd, ptr, expand, h);
+				if (!ft_check_built(cmd))
+				{
+					ft_builtins(cmd, expand, new_ptr);
+					exit (g_global.exit_global);
+				}
+				else if (ft_check_built(cmd))
+					to_be_executed(cmd, ptr, expand, h);
 			}
 			else if (pid < 0)
 			{

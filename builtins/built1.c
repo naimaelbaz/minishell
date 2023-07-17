@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 11:21:08 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/15 09:39:40 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/17 17:54:43 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_expand	*ft_empty_env(t_free **ptr)
 	ft_exp_add_back(&expand, ft_exp_new("PATH=/usr/gnu/bin:/usr/local/bin:"
 			"/bin:/usr/bin:.", ptr));
 	return (expand);
-}
+} 
 
 void	ft_pwd(int i)
 {

@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/04 12:17:29 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/16 17:00:14 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/17 08:10:30 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,17 +31,11 @@ int	ft_check_in_quote(char *input, int i)
 
 int	ft_red_pipe(char *input, int *i, int *nb)
 {
-	// (*i)++;
 	if (input[*i] == '|')
 	{
 		(*i)++;
 		*nb = 1;
-	}
-	if (input[*i] == '>')
-	{
-		(*i)++;
-		if (*nb)
-			return (1);
+		return (1);
 	}
 	return (0);
 }
