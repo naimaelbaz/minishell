@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 10:00:51 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/14 11:22:21 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/19 09:51:00 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,22 +69,21 @@ int	ft_env_variable(t_enum *enu, char **input_line, t_free **ptr,
 
 	if (**input_line == ENV_VAR)
 	{
+		enu->state = DOLLAR_SIGN;
+		enu->type = WORD;
 		if (ft_check_line(*(*input_line + 1)))
 		{
-			enu->state = DOLLAR_SIGN;
-			enu->type = WORD;
 			add_back(token, ft_new(*input_line, 1, *enu, ptr));
 			return ((*input_line)++, 1);
 		}
 		else
 		{
-			if (((*(*input_line + 1) == D_QOUTE || *(*input_line + 1) == QOUTE)) && !g_global.flag)
+			if (((*(*input_line + 1) == D_QOUTE
+						|| *(*input_line + 1) == QOUTE)) && !g_global.flag)
 				return ((*input_line)++, 1);
 			len = 2;
 			if (*(*input_line + 1) != ENV_VAR)
 				len = ft_get_length(*input_line);
-			enu->state = DOLLAR_SIGN;
-			enu->type = WORD;
 			add_back(token, ft_new(*input_line, len, *enu, ptr));
 			return ((*input_line) += len, 1);
 		}

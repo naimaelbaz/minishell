@@ -6,11 +6,22 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 19:39:26 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/17 18:21:59 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/19 13:20:24 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	ft_red_inheredoc(t_token **here, char **input, t_cmd **new)
+{
+	while (*here)
+	{
+		ft_putstr_fd((*here)->data, (*new)->input);
+		(*here) = (*here)->next;
+	}
+	ft_putstr_fd("\n", (*new)->input);
+	free (*input);
+}
 
 void	ft_no_file(char **f)
 {
@@ -37,11 +48,14 @@ void	ft_red_app_out(t_token **tmp, t_cmd **new, char **f)
 	if (!(*tmp)->data && (*tmp)->state == DOLLAR_SIGN)
 	{
 		(*new)->output = -1;
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(": ", 2);
-		ft_putendl_fd(strerror(errno), 2);
+		ft_putendl_fd("minishell: : ambiguous redirect", 2);
 		g_global.exit_global = 1;
 		return ;
+	}
+	if ((*tmp)->state == DOLLAR_SIGN)
+	{
+		if (ft_check_ambiguous(tmp, &((*new)->output)))
+			return ;
 	}
 	(*new)->output = open((*tmp)->data, O_CREAT | O_WRONLY | O_APPEND, 0644);
 	(*new)->output == -1 && ((*f) = (*tmp)->data);
@@ -77,6 +91,7 @@ int	ft_open_files(t_token **tmp, t_cmd **new, t_main **main, int *p)
 
 	f = NULL;
 	g_global.exit_global = 0;
+	g_global.input = 0;
 	while ((*tmp) && (*tmp)->type != PIPE)
 	{
 		if (ft_input_red(tmp, new, main, &f))

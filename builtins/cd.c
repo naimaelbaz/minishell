@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/08 09:32:07 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/16 18:43:15 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/19 08:07:17 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,13 +32,7 @@ t_expand	*ft_cd_whithout_arg(t_expand *expand)
 		ft_set_val("PWD", home, &expand);
 	}
 	else
-	{
-		ft_putstr_fd("minishell: ", 2);
-		ft_putstr_fd(home, 2);
-		ft_putstr_fd(": ", 2);
-		ft_putendl_fd(strerror(errno), 2);
-		g_global.exit_global = 1;
-	}
+		ft_printf_error(home);
 	return (expand);
 }
 
@@ -55,20 +49,19 @@ t_expand	*ft_cd_whith_arg(char **arg, t_expand *expand, t_free **new_ptr)
 {
 	char	*pwd;
 	char	*str;
-	char	cwd[PATH_MAX];
 
 	g_global.exit_global = 0;
 	pwd = ft_search_val("PWD", expand);
 	if (chdir(arg[1]) == 0)
 	{
-		if (getcwd(cwd, sizeof(cwd)) == NULL)
+		if (getcwd(g_global.pwd, sizeof(g_global.pwd)) == NULL)
 		{
 			ft_putstr_fd("cd: error retrieving current directory:"
 				"getcwd: cannot access parent directories: No such"
 				"file or directory\n", 2);
 			return (expand);
 		}
-		str = ft_strdup(cwd);
+		str = ft_strdup(g_global.pwd);
 		ft_add_to_free(new_ptr, ft_new_node(str));
 		ft_set_val("OLDPWD", pwd, &expand);
 		ft_set_val("PWD", str, &expand);

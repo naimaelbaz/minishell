@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 17:21:25 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/14 15:23:21 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/19 10:16:53 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,17 +75,24 @@ void	ft_exp_add_back(t_expand **lst, t_expand *new)
 	}
 }
 
-t_expand	*ft_get_env(t_free **ptr, char **env)
+t_expand	*ft_get_env(t_main *main, char **env)
 {
 	t_expand	*expand;
 	int			i;
+	char		*str;
 
 	i = 0;
 	expand = NULL;
 	while (env[i])
 	{
-		ft_exp_add_back(&expand, ft_exp_new(env[i], ptr));
+		ft_exp_add_back(&expand, ft_exp_new(env[i], &main->new_ptr));
 		i++;
 	}
+	ft_exist_variables(main);
+	getcwd(g_global.pwd, sizeof(g_global.pwd));
+	str = ft_search_val("PWD", expand);
+	ft_add_to_free(&main->new_ptr, ft_new_node(str));
+	if (str && ft_strcmp(str, g_global.pwd))
+		ft_set_val("PWD", g_global.pwd, &expand);
 	return (expand);
 }

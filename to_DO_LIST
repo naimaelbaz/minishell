@@ -15,9 +15,14 @@ exit
 //////
 fn(){ while True; do leaks minishell; sleep 1; done; } ;fn
 
+while True; do lsof -c minishell ;printf "#%.s" {0..100}; sleep 4; done;
+
 echo "echo  a | head -n1" |./minishell
 
 
 /////
 cd
 SHLVL
+
+//
+ls -la | grep mini | echo << a > out | << b cat < Makefile < get.env.c

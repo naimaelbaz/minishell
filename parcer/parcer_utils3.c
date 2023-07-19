@@ -6,50 +6,11 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 11:43:58 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/17 16:54:28 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/19 14:01:10 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-int	ft_ambiguous(t_token **tmp, t_cmd **new)
-{
-	if (!(*tmp)->data && (*tmp)->state == DOLLAR_SIGN)
-	{
-		(*new)->output = -1;
-		ft_putstr_fd("minishell: ambiguous redirect\n", 2);
-		g_global.exit_global = 1;
-		return (1);
-	}
-	return (0);
-}
-
-int	ft_is_pipe(t_token **tmp, t_cmd **new, int	*p)
-{
-	if ((*tmp)->type == PIPE)
-	{
-		(*p)--;
-		(*tmp) = (*tmp)->next;
-		if ((*tmp)->type == WHITE_SPACE)
-			(*tmp) = (*tmp)->next;
-		if (ft_ambiguous(tmp, new))
-			return (1);
-		(*new)->output = open((*tmp)->data, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	}
-	else
-		(*new)->output = open((*tmp)->data, O_CREAT | O_WRONLY | O_TRUNC, 0644);
-	return (0);
-}
-
-void	ft_handle_heredoc(int sig)
-{
-	(void)sig;
-	close(0);
-	g_global.here_sig = 1;
-	g_global.exit_global = 1;
-	// rl_replace_line("", 0);
-	// rl_on_new_line();
-}
 
 int	ft_put_infile(t_token **tmp, t_cmd **new, t_main **main)
 {
@@ -66,36 +27,59 @@ int	ft_put_infile(t_token **tmp, t_cmd **new, t_main **main)
 		input = readline("> ");
 		if (!input)
 		{
-			if (g_global.here_sig)
-			{
-				dup2(fd_in, 0);
-				ft_unlink_heredoc();
-				close(fd_in);
+			if (ft_entre_in_sigint(fd_in))
 				return (1);
-			}
 			break ;
 		}
-		if (!ft_strcmp(input, (*tmp)->data))
-		{
-			free(input);
+		if (ft_is_a_delemiter(input, tmp))
 			break ;
-		}
 		ft_expand_in_heredoc(input, main, &here, *tmp);
-		while (here)
-		{
-			ft_putstr_fd((here)->data, (*new)->input);
-			(here) = (here)->next;
-		}
-		ft_putstr_fd("\n", (*new)->input);
-		free (input);
+		ft_red_inheredoc(&here, &input, new);
 	}
-	dup2(fd_in, 0);
-	close(fd_in);
+	return (dup2(fd_in, 0), close(fd_in), 0);
+}
+
+void	ft_check_space(t_token **tmp, int *i)
+{
+	while ((*tmp)->data[*i] && (((*tmp)->data[*i] >= 9
+				&& (*tmp)->data[*i] <= 13) || (*tmp)->data[*i] == 32))
+		(*i)++;
+}
+
+int	ft_check_ambiguous(t_token **tmp, int *file_fd)
+{
+	int	i;
+
+	i = 0;
+	ft_check_space(tmp, &i);
+	if ((*tmp)->data[i] == '\0')
+	{
+		*file_fd = -1;
+		ft_putstr_fd("minishell: : ambiguous redirect\n", 2);
+		return (g_global.exit_global = 1, 1);
+	}
+	while ((*tmp)->data[i] && !(((*tmp)->data[i] >= 9
+				&& (*tmp)->data[i] <= 13) || (*tmp)->data[i] == 32))
+		i++;
+	if ((*tmp)->data[i] == '\0')
+		return (0);
+	ft_check_space(tmp, &i);
+	if ((*tmp)->data[i] == '\0')
+		return (0);
+	else
+	{
+		*file_fd = -1;
+		ft_putstr_fd("minishell: : ambiguous redirect\n", 2);
+		return (g_global.exit_global = 1, 1);
+	}
 	return (0);
 }
 
 void	ft_red_in(t_token **tmp, t_cmd **new, char **f)
 {
+	int	i;
+
+	i = 0;
 	(*tmp) = (*tmp)->next;
 	if ((*tmp)->type == WHITE_SPACE)
 		(*tmp) = (*tmp)->next;
@@ -105,6 +89,11 @@ void	ft_red_in(t_token **tmp, t_cmd **new, char **f)
 		ft_putstr_fd("minishell: : ambiguous redirect\n", 2);
 		g_global.exit_global = 1;
 		return ;
+	}
+	if ((*tmp)->state == DOLLAR_SIGN)
+	{
+		if (ft_check_ambiguous(tmp, &((*new)->input)))
+			return ;
 	}
 	(*new)->input = open((*tmp)->data, O_RDONLY, 0644);
 	if ((*new)->input == -1)

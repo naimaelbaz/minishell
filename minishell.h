@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:44:30 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/07/17 12:03:59 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/19 19:15:13 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@
 # include <errno.h>
 # include <dirent.h>
 # include <termios.h>
+# include <paths.h>
 
 # include "./libft/libft.h"
 
@@ -33,6 +34,7 @@
 
 typedef struct s_global
 {
+	char	pwd[PATH_MAX];
 	int		delete_shlvl;
 	int		here_sig;
 	int		path;
@@ -183,11 +185,25 @@ void		ft_exp_add_back(t_expand **lst, t_expand *new);
 int			ft_strcmp(char *s1, char *s2);
 char		*ft_get_value(char *sub, t_expand *expand, int a);
 int			ft_is_spec(char c);
-t_expand	*ft_get_env(t_free **ptr, char **env);
-void		ft_expanding(t_token **token, t_expand *expand, t_free **ptr, int flag);
+t_expand	*ft_get_env(t_main *main, char **env);
+void		ft_expanding(t_token **token, t_expand *expand,
+				t_free **ptr, int flag);
 char		*ft_split_expand(char *s, t_expand *expand, int flag);
 int			ft_is_enum(char c);
 void		ft_exit_expand(char **head, t_free **ptr);
+int			ft_is_env(char *s, int *i, int start, char **join);
+int			ft_isnot_env(char *s, int *i, int start, char **join);
+int			ft_expandsize(t_expand *lst);
+char		**myenv(t_expand *expand, t_free **ptr);
+void		ft_put_env(t_main *main, char **env);
+void		ft_init_var(t_main *main, int flag);
+void		ft_exist_variables(t_main *main);
+int			ft_special_variable(char c);
+void		ft_dollarsign_inword(char **str, t_expand *expand, t_free **ptr);
+char		*ft_split_expand(char *s, t_expand *expand, int flag);
+int			ft_is_dollar_signe(char *s, int *i, char **sub, char **join);
+void		ft_skip_special(char *s, int *i);
+void		ft_check_condition(char **join, int flag, char *s);
 
 // delete in folder parcer
 
@@ -213,22 +229,30 @@ int			ft_len(t_token *token, t_free **newptr);
 
 char		**ft_get_arg(t_token *token, t_free **newptr);
 char		*check_existfile(void);
-// void		ft_expand_here_doc(char *str, t_expand *expand);
-void		ft_expand_in_heredoc(char *input, t_main **main, t_token **here, t_token *tmp);
+void		ft_expand_in_heredoc(char *input, t_main **main,
+				t_token **here, t_token *tmp);
 void		ft_open_pipe(t_cmd **cmd);
-int		ft_open_files(t_token **tmp, t_cmd **new, t_main **main, int *p);
+int			ft_open_files(t_token **tmp, t_cmd **new, t_main **main, int *p);
 void		ft_red_in(t_token **tmp, t_cmd **new, char **f);
 int			ft_input_red(t_token **tmp, t_cmd **new, t_main **main, char **f);
 int			ft_ambiguous(t_token **tmp, t_cmd **new);
 int			ft_is_pipe(t_token **tmp, t_cmd **new, int	*p);
 void		ft_unlink_heredoc(void);
+void		ft_handle_heredoc(int sig);
+int			ft_entre_in_sigint(int fd_in);
+int			ft_check_ambiguous(t_token **tmp, int *file_fd);
+void		ft_red_inheredoc(t_token **here, char **input, t_cmd **new);
+int			ft_is_a_delemiter(char *input, t_token **tmp);
 
 // built in folder builtins
 
-void		ft_execution(t_cmd *cmd, t_expand **expand, t_free **new_ptr,
-				t_free **ptr);
+void		ft_execution(t_main *main);
 void		ft_env(t_expand *expand, int i, char **arg);
 void		ft_delete_empty_str(t_token **token);
+void		ft_builtins(t_cmd *cmd, t_expand **expand, t_free **new_ptr,
+				int flag);
+int			ft_check_built(t_cmd *cmd);
+void		ft_wait_process(t_cmd *h, pid_t	pid);
 
 void		ft_export(t_expand *expand, int i, t_free **ptr);
 t_expand	*ft_add_export(t_expand *expand, char **arg, t_free **ptr);
@@ -243,7 +267,7 @@ int			ft_check(char *arg, t_export *export, t_free **ptr);
 int			ft_search(char **str);
 void		ft_echo(int i, char **arg);
 void		ft_pwd(int i);
-t_expand	*ft_empty_env(t_free **ptr);
+t_expand	*ft_empty_env(t_main *main);
 
 t_expand	*ft_unset(char	**arg, t_expand *expand);
 
@@ -252,7 +276,7 @@ char		*ft_search_val(char *key, t_expand	*expand);
 void		ft_set_val(char *key, char *value, t_expand **expand);
 void		ft_printf_error(char *arg);
 
-void		ft_exit(char **args);
+void		ft_exit(char **args, int flag);
 
 char		**ft_split_path(t_expand *expand);
 void		to_be_executed(t_cmd *cmd, t_free **ptr,
@@ -261,6 +285,8 @@ int			ft_check_path(char *join);
 char		*ft_found_path(char **split, char *cmd, t_free **ptr);
 void		ft_dup_file(t_cmd *cmd, t_cmd *h);
 char		**myenv(t_expand *expand, t_free **ptr);
+void		ft_is_a_directory(t_cmd *cmd, t_free **ptr, t_expand **expand);
+void		ft_exist_file(t_cmd *cmd);
 
 //
 

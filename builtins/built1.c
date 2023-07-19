@@ -6,41 +6,39 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 11:21:08 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/17 17:54:43 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/19 09:55:07 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-t_expand	*ft_empty_env(t_free **ptr)
+t_expand	*ft_empty_env(t_main *main)
 {
 	t_expand	*expand;
 	char		*str;
-	char		cwd[PATH_MAX];
 
 	expand = NULL;
-	getcwd(cwd, sizeof(cwd));
-	str = ft_join("PWD=", cwd);
-	ft_add_to_free(ptr, ft_new_node(str));
-	ft_exp_add_back(&expand, ft_exp_new(str, ptr));
-	ft_exp_add_back(&expand, ft_exp_new("SHLVL=1", ptr));
-	ft_exp_add_back(&expand, ft_exp_new("_=/usr/bin/env", ptr));
+	getcwd(g_global.pwd, sizeof(g_global.pwd));
+	str = ft_join("PWD=", g_global.pwd);
+	ft_add_to_free(&main->new_ptr, ft_new_node(str));
+	ft_exp_add_back(&expand, ft_exp_new(str, &main->new_ptr));
+	ft_exp_add_back(&expand, ft_exp_new("SHLVL=1", &main->new_ptr));
+	ft_exp_add_back(&expand, ft_exp_new("_=/usr/bin/env", &main->new_ptr));
 	ft_exp_add_back(&expand, ft_exp_new("PATH=/usr/gnu/bin:/usr/local/bin:"
-			"/bin:/usr/bin:.", ptr));
+			"/bin:/usr/bin:.", &main->new_ptr));
+	ft_exist_variables(main);
 	return (expand);
-} 
+}
 
 void	ft_pwd(int i)
 {
-	static char	cwd[PATH_MAX];
-
-	// getcwd(cwd, sizeof(cwd));
-	if (!getcwd(cwd, sizeof(cwd)) && !access(cwd, F_OK | R_OK | X_OK | W_OK))
+	if (!getcwd(g_global.pwd, sizeof(g_global.pwd))
+		&& !access(g_global.pwd, F_OK | R_OK | X_OK | W_OK))
 	{
 		ft_putstr_fd("minishell: pwd", 2);
 		return ;
 	}
-	ft_putendl_fd(cwd, i);
+	ft_putendl_fd(g_global.pwd, i);
 	g_global.exit_global = 0;
 }
 

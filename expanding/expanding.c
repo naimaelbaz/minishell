@@ -6,88 +6,39 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 10:01:01 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/14 11:12:19 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/19 19:07:03 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-int	ft_is_env(char *s, int *i, int start, char **join)
+void	ft_check_condition(char **join, int flag, char *s)
 {
-	char	*sub;
-
-	if (ft_is_spec(s[*i + 1]) || ft_isdigit(s[*i + 1]))
-		return (*i += 2, 1);
-	else if (!ft_isalpha(s[*i + 1]))
-	{
-		start = (*i)++;
-		while (s[*i] && ft_is_enum(s[*i]) && !ft_is_special(s[*i]))
-			(*i)++;
-		sub = ft_substr(s, start, *i - start);
-		*join = ft_strjoin(*join, sub);
-		return (free (sub), 1);
-	}
-	return (0);
-}
-
-int	ft_isnot_env(char *s, int *i, int start, char **join)
-{
-	char	*sub;
-
-	start = *i;
-	while (s[*i] && s[*i] != ENV_VAR)
-		(*i)++;
-	sub = ft_substr(s, start, *i - start);
-	*join = ft_strjoin(*join, sub);
-	free (sub);
-	return (0);
-}
-
-char	*ft_split_expand(char *s, t_expand *expand, int flag)
-{
-	int		i;
-	int		start;
-	char	*sub;
-	char	*join;
-
-	i = 0;
-	join = NULL;
-	if (!flag)
-		s = ft_strtrim(s, "\"");
-	while (s[i])
-	{
-		s[i] && s[i] != ENV_VAR && ft_isnot_env(s, &i, start, &join);
-		if (s[i] == ENV_VAR)
-		{
-			if (ft_is_env(s, &i, start, &join))
-				continue ;
-			start = i++;
-			while (!ft_is_special(s[i]) && (ft_isalnum(s[i]) || s[i] == '_'))
-				i++;
-			sub = ft_get_value(ft_substr(s, start, i - start), expand, 1);
-			join = ft_strjoin(join, sub);
-			free (sub);
-		}
-	}
-	!join && (join = ft_strdup(""));
+	!(*join) && (*join = ft_strdup(""));
 	if (!flag)
 		free (s);
-	return (join);
 }
 
-void	ft_dollarsign_inword(char **str, t_expand *expand, t_free **ptr)
+int	ft_special_variable(char c)
 {
-	if (ft_isdigit((*str)[1]))
-	{
-		*str += 2;
-		*str = ft_substr(*str, 0, ft_strlen(*str));
-		ft_add_to_free(ptr, ft_new_node(*str));
-	}
-	else
-	{
-		*str = ft_get_value(*str, expand, 0);
-		ft_add_to_free(ptr, ft_new_node(*str));
-	}
+	if (c == '*' || c == '-' || c == '@'
+		|| c == '#' || c == '!')
+		return (1);
+	return (0);
+}
+
+void	ft_skip_special(char *s, int *i)
+{
+	while (!ft_special_variable(s[*i])
+		&& (ft_isalnum(s[*i]) || s[*i] == '_'))
+		(*i)++;
+}
+
+void	ft_get_next(t_token **head)
+{
+	(*head) = (*head)->next;
+	while ((*head) && (*head)->type != WHITE_SPACE)
+		(*head) = (*head)->next;
 }
 
 void	ft_expanding(t_token **token, t_expand *expand, t_free **ptr, int flag)
@@ -100,12 +51,11 @@ void	ft_expanding(t_token **token, t_expand *expand, t_free **ptr, int flag)
 		if (head->prev && (head->prev->type == HERE_DOC
 				|| (head->prev->prev && head->prev->prev->type == HERE_DOC)))
 		{
-			head = head->next;
-			while (head && head->type != WHITE_SPACE)
-				head = head->next;
+			ft_get_next(&head);
 			continue ;
 		}
-		else if (head->state == IN_D_QOUTE || (head->state == IN_QOUTE && flag == 1))
+		else if (head->state == IN_D_QOUTE
+			|| (head->state == IN_QOUTE && flag == 1))
 		{
 			head->data = ft_split_expand(head->data, expand, flag);
 			ft_add_to_free(ptr, ft_new_node(head->data));

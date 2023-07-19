@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 09:10:32 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/11 14:59:31 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/19 17:32:03 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,6 +79,7 @@ int	ft_check(char *arg, t_export *export, t_free **ptr)
 		{
 			free (export->key);
 			ft_print_error(arg);
+			export->nb = 1;
 			return (1);
 		}
 		ft_add_to_free(ptr, ft_new_node(export->key));

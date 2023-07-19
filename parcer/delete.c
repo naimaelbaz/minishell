@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 10:07:54 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/17 12:04:43 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/18 07:46:29 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,10 @@ char	*ft_join(char *s1, char *s2)
 
 int	ft_join_check(t_token	*head)
 {
-	if (head->next && (head->type == IN_D_QOUTE || head->type == IN_QOUTE || head->type == WORD)
-		&& (head->next->type == IN_D_QOUTE || head->next->type == IN_QOUTE || head->next->type == WORD))
+	if (head->next && (head->type == IN_D_QOUTE
+			|| head->type == IN_QOUTE || head->type == WORD)
+		&& (head->next->type == IN_D_QOUTE || head->next->type == IN_QOUTE
+			|| head->next->type == WORD))
 		return (1);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:45:23 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/16 17:09:20 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/19 08:05:22 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,8 @@ t_cmd	*ft_new_cmd(t_free **ptr, void *content)
 	return (node);
 }
 
-void	ft_expand_in_heredoc(char *input, t_main **main, t_token **here, t_token *tmp)
+void	ft_expand_in_heredoc(char *input, t_main **main,
+			t_token **here, t_token *tmp)
 {
 	g_global.flag = 1;
 	ft_lexing(input, here, &(*main)->ptr);
