@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:50:15 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/19 14:43:55 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/20 10:37:22 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,11 +89,11 @@ void	ft_open_pipe(t_cmd **cmd)
 	while (tmp && tmp->next)
 	{
 		pipe(pipefd);
-		if (tmp->output == 1)
+		if (tmp->output == 1 || tmp->output == -1)
 			tmp->output = pipefd[1];
 		else
 			close(pipefd[1]);
-		if (tmp->next->input == 0)
+		if (tmp->next->input == 0 || tmp->input == -1)
 			tmp->next->input = pipefd[0];
 		else
 			close(pipefd[0]);

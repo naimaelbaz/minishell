@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/30 18:44:30 by nel-baz           #+#    #+#             */
-/*   Updated: 2023/07/19 19:15:13 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/20 10:49:43 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ typedef struct s_global
 	int		exit_global;
 	int		shlvl;
 	int		flag;
-	int		input;
 	char	**split;
 	char	*name_hedoc;
 	int		hedoc;
@@ -115,6 +114,7 @@ typedef struct s_cmd
 	char			*cmd;
 	int				input;
 	int				output;
+	int				f;
 	char			**arg;
 	struct s_cmd	*next;
 	struct s_cmd	*prev;

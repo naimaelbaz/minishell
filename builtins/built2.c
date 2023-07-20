@@ -6,11 +6,18 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 09:24:48 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/19 19:15:36 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/20 10:52:27 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+void	ft_error_in_directory(char *str)
+{
+	ft_putstr_fd("minishell: ", 2);
+	ft_putstr_fd(str, 2);
+	ft_putstr_fd(": No such file or directory\n", 2);
+}
 
 void	ft_env(t_expand *expand, int i, char **arg)
 {
@@ -18,7 +25,7 @@ void	ft_env(t_expand *expand, int i, char **arg)
 
 	if (arg[1])
 	{
-		ft_printf_error(arg[1]);
+		ft_error_in_directory(arg[1]);
 		g_global.exit_global = 127;
 		return ;
 	}

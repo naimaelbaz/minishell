@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 18:45:23 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/19 08:05:22 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/20 10:39:37 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,6 +82,7 @@ int	ft_parcer(t_main **main)
 			i = 0;
 			new = ft_new_cmd(&(*main)->ptr, ft_get_cmd(tmp, &(*main)->ptr));
 			ft_add_cmd(&(*main)->cmd, new);
+			new->f = 0;
 			new->arg = ft_get_arg(tmp, &(*main)->ptr);
 			if (ft_open_files(&tmp, &new, main, &countp))
 				return (1);

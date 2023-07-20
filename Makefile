@@ -6,7 +6,7 @@
 #    By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/30 18:39:13 by nel-baz           #+#    #+#              #
-#    Updated: 2023/07/19 19:12:38 by ylachhab         ###   ########.fr        #
+#    Updated: 2023/07/20 07:40:10 by ylachhab         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,7 +14,7 @@ NAME = minishell
 
 CC = cc
 
-FLAGS = -Wall -Werror -Wextra #-g -fsanitize=address
+FLAGS = -Wall -Werror -Wextra -g -fsanitize=address
 
 SRCS =	main.c \
 		syntax_error/func_utils.c \

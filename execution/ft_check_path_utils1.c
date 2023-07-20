@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/18 08:59:49 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/18 09:00:23 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/20 07:50:27 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ void	ft_exist_file(t_cmd *cmd)
 {
 	struct stat	state;
 
-	if (access(cmd->cmd, X_OK | W_OK | R_OK | F_OK) == -1)
+	if (access(cmd->cmd, X_OK | R_OK | F_OK) == -1)
 	{
 		ft_putstr_fd("minishell: ", 2);
 		ft_putstr_fd(cmd->cmd, 2);

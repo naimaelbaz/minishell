@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/15 19:39:26 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/19 13:20:24 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/20 10:49:59 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ int	ft_open_files(t_token **tmp, t_cmd **new, t_main **main, int *p)
 
 	f = NULL;
 	g_global.exit_global = 0;
-	g_global.input = 0;
 	while ((*tmp) && (*tmp)->type != PIPE)
 	{
 		if (ft_input_red(tmp, new, main, &f))

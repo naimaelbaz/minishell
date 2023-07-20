@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/24 11:43:58 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/19 14:01:10 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/20 10:49:08 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ void	ft_red_in(t_token **tmp, t_cmd **new, char **f)
 	(*new)->input = open((*tmp)->data, O_RDONLY, 0644);
 	if ((*new)->input == -1)
 	{
-		g_global.input = 1;
+		(*new)->f = 1;
 		((*f) = (*tmp)->data);
 		g_global.exit_global = 1;
 	}
@@ -120,7 +120,7 @@ int	ft_input_red(t_token **tmp, t_cmd **new, t_main **main, char **f)
 			return (1);
 		close((*new)->input);
 		(*new)->input = open(g_global.name_hedoc, O_CREAT | O_RDWR, 0644);
-		if (g_global.input)
+		if ((*new)->f)
 			(*new)->input = -1;
 	}
 	if ((*tmp) && (*tmp)->type == RED_IN && !(*f))

@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 09:39:59 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/06/10 10:54:59 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/20 09:58:20 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ int	get_len_of_word(char *input_line, int i)
 		&& input_line[i] != WHITE_SPACE && input_line[i] != PIPE
 		&& input_line[i] != RED_IN && input_line[i] != RED_OUT
 		&& input_line[i] != D_QOUTE && input_line[i] != QOUTE
-		&& input_line[i] != ENV_VAR)
+		&& input_line[i] != ENV_VAR && input_line[i] != '\t')
 		i++;
 	return (i);
 }
@@ -65,9 +65,9 @@ void	ft_lexing(char *input_line, t_token	**token, t_free	**ptr)
 	t_enum	enu;
 	int		len;
 
-	while (*input_line == WHITE_SPACE)
+	while (input_line && (*input_line == WHITE_SPACE || *input_line == '\t'))
 			input_line++;
-	while (*input_line)
+	while (input_line && *input_line)
 	{
 		enu.state = GENERAL;
 		if (ft_redirection(&enu, &input_line, ptr, token))

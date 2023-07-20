@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/08 10:00:51 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/19 09:51:00 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/20 08:34:59 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 int	ft_pipe_space(t_enum *enu, char **input_line, t_free **ptr,
 						t_token **token)
 {
-	if (**input_line == WHITE_SPACE)
+	if (**input_line == WHITE_SPACE || **input_line == '\t')
 	{
 		enu->type = WHITE_SPACE;
 		add_back(token, ft_new(*input_line, 1, *enu, ptr));
-		while (*(*input_line + 1) == WHITE_SPACE)
+		while (*(*input_line + 1) == WHITE_SPACE || *(*input_line + 1) == '\t')
 			(*input_line)++;
 		return ((*input_line)++, 1);
 	}

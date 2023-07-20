@@ -6,7 +6,7 @@
 /*   By: ylachhab <ylachhab@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/07/09 16:28:56 by ylachhab          #+#    #+#             */
-/*   Updated: 2023/07/19 15:33:45 by ylachhab         ###   ########.fr       */
+/*   Updated: 2023/07/20 10:50:21 by ylachhab         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	ft_dup_file(t_cmd *cmd, t_cmd *h)
 {
 	if (cmd->output != 1)
 		dup2(cmd->output, 1);
-	if (cmd->input != 0 && g_global.input == 0)
+	if (cmd->input != 0 && cmd->f == 0)
 		dup2(cmd->input, 0);
 	while (h)
 	{
